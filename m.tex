@@ -24,6 +24,10 @@
 %% The amsthm package provides extended theorem environments
 % \usepackage{amsthm}
 
+% Pseudocode
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
 %% The lineno packages adds line numbers. Start line numbering with
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
 %% for the whole article with \linenumbers.
@@ -62,7 +66,8 @@
 %%            country={}}
 %% \fntext[label3]{}
 
-\title{} %% Article title
+\title{NOTE and T-NOTE an efficient transformer encoder for IoT task offloading in edge-fog-cloud computing environment
+} %% Article title
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{}
@@ -152,9 +157,9 @@ In order to maintain currency with the latest advancements in this domain, the p
 
 To address these gaps, this work makes the following key contributions:
 \begin{itemize} 
-    \item The proposal of a two-transformers-based architecture, utilizing DQRL for the purpose of task offloading within a cloud-fog-edge environment, is hereby presented. The selection of the node (edge, fog or cloud) to execute each incoming task is determined by these models, representing n different ctions. The NOTE system is oriented towards node-level features, such as CPU, buffer, and bandwidth. In contrast, the T-NOTE system incorporates additional task attributes, including size, deadline, and CPU-cycle requirements. This capability facilitates a more precise depiction of the interplay between node resources and task demands within a fog environment.
+    \item The proposal of a two-transformers-based architecture, utilizing DQL for the purpose of task offloading within a cloud-fog-edge environment, is hereby presented. The selection of the node (edge, fog or cloud) to execute each incoming task is determined by these models, representing n different ctions. The NOTE system is oriented towards node-level features, such as CPU, buffer, and bandwidth. In contrast, the T-NOTE system incorporates additional task attributes, including size, deadline, and CPU-cycle requirements. This capability facilitates a more precise depiction of the interplay between node resources and task demands within a fog environment.
 
-    \item A transformation of the conventional static genome to a dynamic one is achieved by adapting the Niched Pareto Genetic Algorithm (NPGA) and the Non-dominated Sorting Genetic Algorithm II (NSGA-II), two multi-objective genetic algorithms (GAs), to a MLP as the genome. Subsequently, a comparative analysis was conducted between the GAs and a Deep Q-Learning (DQRL) approach. The implementation of these algorithms in the training of a MLP constitutes a pivotal element of the study. The GA approach is employed in a dynamic setting, thereby enabling the MLP to be optimized for multi-objective offloading in real time.
+    \item A transformation of the conventional static genome to a dynamic one is achieved by adapting the Niched Pareto Genetic Algorithm (NPGA) and the Non-dominated Sorting Genetic Algorithm II (NSGA-II), two multi-objective genetic algorithms (GAs), to a MLP as the genome. Subsequently, a comparative analysis was conducted between the GAs and a Deep Q-Learning (DQL) approach. The implementation of these algorithms in the training of a MLP constitutes a pivotal element of the study. The GA approach is employed in a dynamic setting, thereby enabling the MLP to be optimized for multi-objective offloading in real time.
 
     
     \item This work also puts forth a model for offloading in hybrid environments that considers a substantial number of parameters for the QoS. To further expand upon the existing body of knowledge, an adaptation of a scenario with a real dataset was implemented within the framework of RayClousSim, which is available at https://github.com/tutur90/Task-Offloading-Fog.
@@ -183,9 +188,9 @@ Nevertheless, the task offloading problem is considered NP-hard, as demonstrated
 
 Heuristic methods are well-suited for scaling in complex edge/cloud environments, as they avoid the exponential computational growth of deterministic algorithms \cite{zhang_survey_2024}. For example, the Deadline and Priority-aware Task Offloading (DPTO) algorithm \cite{adhikari_dpto_2020} schedules tasks by prioritizing delays and task priorities, selecting optimal devices to minimize overall offloading time.
 
-Metaheuristic algorithms, known for their adaptability, have also shown strong performance.~\citep{bernard_dnpga_2024} introduced the Drafting Niched Pareto Genetic Algorithm (D-NPGA), which optimizes task offloading decisions and improves makespan and cost efficiency for IoT tasks in fog/cloud systems.
+Metaheuristic algorithms, known for their adaptability, have also shown strong performance.~\citep{bernard_d-npga_2024} introduced the Drafting Niched Pareto Genetic Algorithm (D-NPGA), which optimizes task offloading decisions and improves makespan and cost efficiency for IoT tasks in fog/cloud systems.
 
-More sophisticated methods use multiple approaches. For example, Energy-Efficient and Deadline-Aware Task Scheduling in Fog Computing (ETFC) \cite{pakmehr_etfc_2024} employs a Support Vector Machine (SVM) to predict traffic on fog nodes and classify them as low- or high-traffic. Then, they use reinforcement learning (RL) on the low-traffic group and a non-dominated sorting genetic algorithm III (NSGA-III) on the high-traffic group to make the offloading decision. This allows both algorithms to perform better on adequate tasks.
+More sophisticated methods use multiple approaches. For example, Energy-Efficient and Deadline-Aware Task Scheduling in Fog Computing (ETFC)~\cite{pakmehr_etfc_2024} employs a Support Vector Machine (SVM) to predict traffic on fog nodes and classify them as low- or high-traffic. Then, they use reinforcement learning (RL) on the low-traffic group and a non-dominated sorting genetic algorithm III (NSGA-III) on the high-traffic group to make the offloading decision. This allows both algorithms to perform better on adequate tasks.
 
 Metaheuristic approaches have gained attention for their ability to address the NP-hard nature of the task offloading problem with flexibility and adaptability. A recent and comprehensive survey by~\cite{rahmani_optimizing_2025} reviewed a wide range of metaheuristic algorithms—including Genetic Algorithms (GA), Particle Swarm Optimization (PSO), Ant Colony Optimization (ACO), and Grey Wolf Optimizer (GWO)—applied to task offloading in IoT environments. The review identified key strengths of these methods in balancing latency, energy consumption, and cost efficiency across heterogeneous fog-edge-cloud infrastructures. Their taxonomy also distinguishes between evolutionary and swarm-based algorithms, showing that hybrid models are increasingly used to adapt to dynamic network conditions. Despite their strengths, the authors noted limitations in scalability and real-time adaptability—areas where AI and deep learning techniques, such as DRL or transformers, may provide an edge.
 
@@ -212,7 +217,7 @@ Genetic Algorithms (GAs) are often static in nature, such as in~\cite{bernard_d-
 
 Transformer-based deep learning techniques remain poorly explored in this domain, despite being state-of-the-art in many fields. Some exploration efforts show promise; however, existing approaches often implement basic action spaces, such as TPTO~\cite{gholipour_tpto_2023}, which is designed with only two actions: offloading the task to the cloud or processing it on the edge.
 
-Algorithms are referenced in the Table~\ref{tab:task_offloading_methods} with the method, the dataset type, the QOS evaluated, and the job type. Used QOS are referenced in the Table~\ref{table:qos_metrics} with their description.
+Algorithms are referenced in the Table~\ref{tab:task_offloading_methods} with the method, the dataset type, the QoS evaluated, and the job type. Used QoS are referenced in the Table~\ref{table:qos_metrics} with their description.
 
 
 \begin{table*}[h!]\label{tab:task_offloading_methods}
@@ -234,7 +239,7 @@ This work & Metaheuristic & NPGA/NSGA-II+MLP & Real & C, L, TTR & IoT tasks & Cl
 ~\cite{ren_deep_2021} & AI & Multi-agent DRL & Synthetic & E & IoT tasks & Cloud \& Fog & NA \\ \hline
 ~\cite{tu_task_2022} & AI & DRL+LSTM & Real & C, L, TTR & Mobile & MEC & NA \\ \hline
 ~\cite{gholipour_tpto_2023} & AI & Transformers PPO & Synthetic & L & IoT tasks & Edge & Python, TensorFlow \\ \hline
-This work & AI & DQRL+MLP & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
+This work & AI & DQL+MLP & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
 This work & AI & Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
 \end{tabular}
 }
@@ -263,36 +268,30 @@ DLV\@: Dead Line Violation & The percentage or rate of tasks that succeed to com
 \end{table*}
 
 
-\section{Problem Modeling}
-\label{sec:problem_modeling}
+\section{Problem Modeling}\label{sec:problem_modeling}
 
-\subsection{Scenario Modeling}
-\label{sec:problem_modeling}
+\subsection{Scenario Modeling}\label{sec:scenario_modeling}
 
 This scenario is modeled according to foundational concepts presented in\cite{aazam_cloud_2022, bukhari_intelligent_2022, jazayeri_autonomous_2021}, following a three-tier offloading approach that involves \textit{edge}, \textit{fog}, and \textit{cloud} nodes. In Figure~\ref{fig:cloud-architecture}, a high-level cloud-enabled architecture is shown, where a Global Gateway (GG) collects tasks from various IoT devices before determining whether to process them locally or offload them to fog or cloud resources.
 
 
 A real-world dataset of IoT-generated tasks, is employed to study and evaluate these offloading decisions. The tasks in this dataset vary in size, deadline constraints, and computational complexity, thereby reflecting the heterogeneous nature of practical IoT workloads.
 
-\begin{figure}[ht]
+\begin{figure}[ht]\label{fig:cloud-architecture}
+
     \centering
     \includegraphics[width=0.75\linewidth]{figs/cloud_architecture.png}
     \caption{System Architecture}
-    \label{fig:cloud-architecture}
 \end{figure}
 
 
-\subsubsection{Architecture}
-\label{subsec:architecture}
+\subsubsection{Architecture}\label{subsec:architecture}
 
-In Figure~\ref{fig:cloud-architecture}, a schematic overview of the \textbf{proposed three-tier architecture} is illustrated. The system is composed of IoT devices (sensors, mobile nodes, and other edge devices) that generate tasks. These tasks subsequently reach the Global Gateway, which processes them locally if resources are available, or decides to offload them to the fog or the cloud based on resource availability and energy considerations.
+In Figure~\ref{fig:cloud-architecture}, a schematic overview of the proposed three-tier architecture is illustrated. The system is composed of IoT devices (sensors, mobile nodes, and other edge devices) that generate tasks. These tasks subsequently reach the Global Gateway, which processes them locally if resources are available, or decides to offload them to the fog or the cloud based on resource availability and energy considerations.
 
+\paragraph{Global Gateway}\label{subsubsec:GG}
 
-
-\paragraph{Global Gateway}
-\label{subsubsec:GG}
-
-The GG layer is located at the edge and aggregates tasks from local IoT devices. In addition to routing capabilities, the GG has limited computational power, enabling it to handle \emph{smaller tasks} locally and thus reduce network traffic. This approach is particularly advantageous for time-sensitive tasks that can be processed quickly on-site.
+The GG layer is located at the edge and aggregates tasks from local IoT devices. In addition to routing capabilities, the GG has limited computational power, enabling it to handle smaller tasks locally and thus reduce network traffic. This approach is particularly advantageous for time-sensitive tasks that can be processed quickly on-site.
 
 Upon receiving a task, several factors are evaluated:
 \begin{itemize}
@@ -305,18 +304,15 @@ Upon receiving a task, several factors are evaluated:
 A subsequent decision is made to determine the optimal execution strategy for the task. The system evaluates three primary options: processing the task locally if it is computationally feasible and resource-efficient, offloading the task to a nearby Fog Node to leverage edge computing capabilities, or offloading the task directly to a Cloud Node for intensive computational requirements that exceed local and fog node capacities.
 
 
-\paragraph{Fog Nodes}
-\label{subsubsec:Fog}
+\paragraph{Fog Nodes}\label{subsubsec:Fog}
 Fog nodes provide moderate computational resources that exceed those of edge devices but remain below the capacity of cloud data centers. These intermediate computing nodes offer lower latency than distant cloud nodes due to their closer physical proximity to the network edge. Fog nodes serve as an essential intermediate tier for tasks that cannot be processed locally at the Gateway (GG) yet do not require the extensive resources of the cloud infrastructure. This positioning makes them ideal for applications requiring balanced performance between computational capability and response time.
 
-\paragraph{Cloud Nodes}
-\label{subsubsec:Cloud}
-Cloud nodes represent large-scale data centers with substantial computational and storage capabilities. Although they typically have higher baseline latencies because of greater network distances, they are well suited for computationally intensive applications. Cloud nodes excel in handling large tasks that demand significant CPU and memory resources, making them optimal for complex analytical workloads. They are particularly effective for batch processing scenarios with relaxed real-time constraints, where throughput is prioritized over immediate response. Furthermore, cloud data centers can accommodate high concurrency situations through dynamic resource scaling, allowing them to adapt to varying computational demands efficiently. concurrency situations, as cloud data centers can scale resources dynamically.
-
+\paragraph{Cloud Nodes}\label{subsubsec:Cloud}
+Cloud nodes represent large-scale data centers with substantial computational and storage capabilities. Although they typically have higher baseline latencies because of greater network distances, they are well suited for computationally intensive applications. Cloud nodes excel in handling large tasks that demand significant CPU and memory resources, making them optimal for complex analytical workloads. They are particularly effective for batch processing scenarios with relaxed real-time constraints, where throughput is prioritized over immediate response. Furthermore, cloud data centers can accommodate high concurrency situations through dynamic resource scaling, allowing them to adapt to varying computational demands efficiently.
 
 CPU capacity: Cloud servers can support a high volume of CPU cycles, facilitating efficient offloading for tasks with elevated computational demands.
 
-\subsection{QoS Modeling}\label{sec:simulation_modeling}
+\subsection{QoS Modeling}\label{sec:qos_modeling}
 
 Task offloading decisions are evaluated within the RayCloudSim framework developed by~\cite{zhang2022osttd}, a comprehensive simulation platform for modeling and assessing cloud-edge-IoT computing environments based on LEAF~\citep{WiesnerThamsen_LEAF_2021}.
 
@@ -330,6 +326,520 @@ The \emph{task throw rate} \(\tau\) is defined as:
 \end{equation}
 A lower throw rate is indicative of a more robust and efficient offloading strategy.
 
+\subsubsection{Latency}\label{subsubsec:latency}
+
+The latency metric for task offloading is exclusively defined for tasks that achieve successful offloading, as the underlying assumption requires that tasks both arrive at the destination and undergo computational processing. For tasks meeting this criterion, the total latency encompasses three distinct components and is formally expressed as:
+\begin{equation}
+L_{\text{total}} = L_{\text{transmission}} + L_{\text{processing}} + L_{\text{queuing}}
+\end{equation}
+Conversely, for tasks that fail to achieve successful offloading, whether due to transmission failures, processing errors, or other system constraints, the total latency is assigned a null value:
+\begin{equation}
+L_{\text{total}} = 0
+\end{equation}
+
+\paragraph{Transmission Delay}
+Transmission delay is composed of transfer delay and propagation delay:
+\begin{equation}
+L_{\text{transmission}} = L_{\text{transfer}} + L_{\text{propagation}}.
+\end{equation}
+
+\begin{enumerate}
+    \item Transfer Delay: The duration required to send all bits of a packet onto the transmission medium:
+    \begin{equation}
+    L_{\text{transfer}} = \frac{S}{B},
+    \end{equation}
+    where \( S \) is the data size (in bits) and \( B \) is the allocated bandwidth for the task (in bits per second).
+
+    \item Propagation Delay: The time taken for a signal to traverse the medium:
+    \begin{equation}
+    L_{\text{propagation}} = \frac{d}{v},
+    \end{equation}
+    where \( d \) is the total transmission distance (in meters) and \( v \approx 2 \times 10^8 \,\text{m/s}\) in optical fiber.
+\end{enumerate}
+
+\paragraph{Processing Delay}
+Processing delay is the time spent by a computing node on executing a task:
+\begin{equation}
+L_{\text{processing}} = \frac{C \cdot S}{f},
+\end{equation}
+where \( C \) is the number of CPU cycles required to process the task, and \( f \) is the CPU frequency (in cycles per second).
+
+\paragraph{Queuing Delay}
+Queuing delay captures the waiting time a task experiences when the node is busy executing other tasks:
+\begin{equation}
+L_{\text{queuing}} = \sum_{i=1}^{N} L_{\text{processing}, i},
+\end{equation}
+where \( N \) is the number of tasks that arrived before the current task, and \( L_{\text{processing}, i} \) is the processing time of each task in the queue.
+
+\subsubsection{Energy Consumption Model}\label{subsec:energy_consumption}
+
+Similar to the latency metric, energy consumption is exclusively defined for tasks that achieve successful offloading. The simulation framework categorizes energy consumption into three distinct components:
+
+\begin{itemize}
+    \item \textbf{Idle Energy} $(E_{\text{idle}}^{i})$: Energy drawn by node $i$ when it remains idle, estimated through an idle power coefficient $P_{\text{idle}}$.
+    \item \textbf{Execution Energy} $(E_{\text{exe}}^{i,k})$: Energy consumed by node $i$ during the execution of task $k$, based on execution power $P_{\text{exe}}$.
+    \item \textbf{Transmission Energy} $(E_{\text{trans}}^{i,k})$: Energy utilized to transmit task $k$ from source node $j$ to destination node $i$, determined by a per-bit cost $C^{m,n}$ on the communication link.
+\end{itemize}
+
+All energy terms are expressed in Joules (J), while power $(P)$ is measured in Watts (W). Let $N$ denote the number of nodes and $T$ represent the total number of tasks successfully offloaded. The overall energy consumption in the system is calculated as:
+
+\begin{equation}
+E_{\text{total}} = 
+    \sum_{i=1}^{N}
+    \Bigl( E_{\text{idle}}^{i} + \sum_{k=1}^{T} 
+    \bigl(E_{\text{exe}}^{i,k} + E_{\text{trans}}^{i,k}\bigr) \Bigr)
+\end{equation}
+
+This formulation ensures that energy consumption measurements reflect only the computational and communication activities associated with successful task offloading, maintaining consistency with the latency metric definition and providing a meaningful performance evaluation.
+
+\paragraph{Node Power Consumption Model}
+Based on the work of~\cite{ismail_computing_2021}, the power consumption of a computing node can be approximated by:
+\begin{equation}
+P(u_{\text{cpu}}) = \alpha + \beta \cdot u_{\text{cpu}},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(\alpha\) represents the idle power \((P_{\text{idle}})\).
+    \item \(\beta\) is the incremental power coefficient for executing tasks, defined by \(\beta = (P_{\text{exe}} - P_{\text{idle}})\).
+    \item \(u_{\text{cpu}} \in [0,1]\) is the CPU utilization ratio.
+\end{itemize}
+
+This model has a Standard Error of Estimation (SEE) of 12.9\%, indicating a reasonably accurate fit to empirical data. 
+
+\paragraph{Idle Energy}
+The idle energy for node \(i\) over the entire simulation duration \(T\) can be calculated as:
+\begin{equation}
+E_{\text{idle}}^{i} = \int_{0}^{T} P_{\text{idle}}^{i} \, dt = P_{\text{idle}}^{i} \cdot T.
+\end{equation}
+
+\paragraph{Execution Energy}
+Execution energy can be expressed by integrating the CPU utilization over time:
+\begin{equation}
+E_{\text{exe}}^{i} = \int_{0}^{T} \bigl(P_{\text{exe}}^{i} - P_{\text{idle}}^{i}\bigr) \cdot u_{\text{cpu}}(t) \, dt.
+\end{equation}
+In practical simulations, full CPU utilization \((u_{\text{cpu}} = 1)\) is often assumed while tasks are running, yielding:
+\begin{equation}
+E_{\text{exe}}^{i,k} = T_{\text{exe}}^{i,k} \cdot \bigl(P_{\text{exe}}^{i} - P_{\text{idle}}^{i}\bigr),
+\end{equation}
+where \(T_{\text{exe}}^{i,k}\) represents the execution time of task \(k\) on node \(i\).
+
+\paragraph{Transmission Energy}
+The transmission energy required to move task \(k\) from node \(j\) (source) to node \(i\) (destination) depends on data size and per-bit link costs:
+\begin{equation}
+E_{\text{trans}}^{i,k} = s^{k} \sum_{(m,n) \in I^{j,i}} C^{m,n},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(s^{k}\) is the size of task \(k\) in bits.
+    \item \(C^{m,n}\) is the energy cost per bit (J/bit) on the link from node \(m\) to node \(n\).
+    \item \(I^{j,i}\) is the set of links used along the path from node \(j\) to node \(i\).
+\end{itemize}
+
+This model offers a structured, interpretable framework for quantifying energy consumption in offloading scenarios, thereby facilitating meaningful comparisons of energy efficiency under different scheduling and resource-allocation strategies.
+
+
+\section{Proposed Offloading Strategies}\label{sec:offloading_strategies}
+
+
+A range of offloading strategies was proposed to explore different decision-making paradigms, including NPGA, NSGA, and (DQL). Each approach balances complexity and global optimality to varying degrees.
+
+\subsection{Metaheuristics}\label{subsec:metaheuristics}
+
+Metaheuristic algorithms, such as evolutionary methods, excel at exploring large, dynamic search spaces in IoT offloading. Although they have been applied in more static contexts by~\cite{bernard_d-npga_2024}, this work extends them to a \emph{dynamic} genome representation namely, an MLP mapping real-time states to offloading actions, following ideas proposed by~\cite{such2018deepneuroevolutiongeneticalgorithms}.
+
+    
+
+\subsubsection{GA}
+
+
+\paragraph{Genome Representation (MLP Encoding)}
+A candidate solution (or individual) is encoded as the set of weight matrices and bias vectors in a multi-layer perceptron (MLP). Each layer $\ell$ has trainable parameters $\mathbf{W}_\ell$ (weights) and $\mathbf{b}_\ell$ (bias). Thus, the full network is defined as
+\[
+\Big\{(\mathbf{W}_1, \mathbf{b}_1), (\mathbf{W}_2, \mathbf{b}_2), \dots, (\mathbf{W}_L, \mathbf{b}_L)\Big\}.
+\]
+These parameters determine how input features (e.g., CPU, buffer, bandwidth) are progressively transformed into node-specific scores for offloading. Evolutionary operators act directly on both the weight matrices and the bias vectors over multiple generations.
+
+\paragraph{MLP Forward Mapping}
+For an input feature vector $\mathbf{X}$, the MLP computes the output $\mathbf{Y}$ layer by layer:
+\[
+\mathbf{h}_1 = \phi(\mathbf{W}_1 \mathbf{X} + \mathbf{b}_1), \quad
+\mathbf{h}_2 = \phi(\mathbf{W}_2 \mathbf{h}_1 + \mathbf{b}_2), \quad \dots \quad
+\mathbf{Y} = f(\mathbf{W}_L \mathbf{h}_{L-1} + \mathbf{b}_L),
+\]
+where $\phi(\cdot)$ is a non-linear activation function (e.g., ReLU, sigmoid), and $f(\cdot)$ is the output activation (e.g., softmax for classification, linear for regression).
+
+\paragraph{Crossover and Mutation}
+\textbf{Crossover:} Two parent genomes
+\(\{(\mathbf{W}_\ell^{(p1)}, \mathbf{b}_\ell^{(p1)})\}\) 
+and 
+\(\{(\mathbf{W}_\ell^{(p2)}, \mathbf{b}_\ell^{(p2)})\}\)
+are combined by arithmetic crossover:
+\[
+\mathbf{W}_\ell^{(\text{child})} 
+= \alpha\,\mathbf{W}_\ell^{(p1)} 
++ (1-\alpha)\,\mathbf{W}_\ell^{(p2)}, \qquad
+\mathbf{b}_\ell^{(\text{child})} 
+= \alpha\,\mathbf{b}_\ell^{(p1)} 
++ (1-\alpha)\,\mathbf{b}_\ell^{(p2)},
+\]
+where $\alpha \in [0,1]$ is chosen at random, ensuring offspring inherit traits from both parents.
+
+\textbf{Mutation:} With probability $p_{\text{mutation}}$, each element of a weight matrix or bias vector is perturbed by Gaussian noise:
+\[
+\mathbf{W}[i,j] \leftarrow \mathbf{W}[i,j] + \epsilon_{ij}, 
+\qquad 
+\mathbf{b}[k] \leftarrow \mathbf{b}[k] + \delta_{k},
+\]
+where $\epsilon_{ij}, \delta_k \sim \mathcal{N}(0,\sigma^2)$. Clipping may be applied to maintain valid parameter ranges.
+
+
+\paragraph{Overall Workflow of Genetic Algorithms}
+The genetic algorithm process begins with population initialization, where an initial population of candidate solutions (chromosomes) is randomly generated using an appropriate representation format. Each individual in the population is then evaluated using multiple objective functions to determine fitness values across all optimization criteria. The selection phase follows, where parent individuals are chosen for reproduction based on their performance scores. The core evolutionary operations of crossover and mutation are then applied to generate offspring by recombining selected parents through crossover operations and introducing random variations through mutation. Subsequently, the replacement phase evaluates new offspring and forms the next generation by combining or replacing individuals from the parent and offspring populations using multi-objective replacement strategies. The algorithm terminates after reaching a maximum number of generations, achieving convergence criteria, or meeting other predefined stopping conditions. The final Pareto front represents the set of non-dominated solutions, effectively demonstrating the trade-offs among competing objectives. The pseudo code of the GA is referenced in Algorithm~\ref{alg:moega_iot_offloading}.
+
+\paragraph{Multi-objective GA} As the GA algorithm is based on multiple individuals, it can achieve multiple objectives. During the selection process, the selected individuals were able to select multiple scores, rather than a single score, thereby creating the Pareto front. The present study focuses on two scalable and robust approaches. 
+
+\emph{NPGA}~\citep{horn1994npga} employs a combination of tournament selection and a niching mechanism to maintain population diversity and prevent premature convergence to a single region of the Pareto front. The selection process works by conducting tournaments between randomly selected candidate solutions, where the winner is determined based on Pareto dominance relationships within a randomly chosen comparison set. Specifically, two candidates compete by counting how many individuals they dominate from a subset of the population, and the candidate with higher dominance count is selected. This approach naturally maintains diversity by distributing selection pressure across different regions of the Pareto front without requiring explicit front classification.
+
+In contrast, \emph{NSGA-II}~\citep{Deb2002AFA} uses non-dominated sorting to classify solutions into hierarchical fronts and employs crowding distance calculations to preserve solution diversity within each front and guide selection for the next generation. The selection mechanism first performs non-dominated sorting to organize the population into ranked fronts ($\mathcal{F}_1, \mathcal{F}_2, \ldots$), where $\mathcal{F}_1$ contains the best non-dominated solutions. Within each front, crowding distance is calculated to measure the density of solutions in the objective space, favoring individuals in less crowded regions. Selection prioritizes individuals from better fronts first, and within the same front, those with larger crowding distances are preferred to maintain diversity along the Pareto front.
+
+
+\begin{algorithm}[H]\label{alg:moega_iot_offloading}
+\caption{Multi-Objective Genetic Algorithm for IoT Task Offloading}
+
+\begin{algorithmic}[1]
+\REQUIRE{Generations $G_{\max}$, population size $N$, crossover rate $p_c$, mutation rate $p_m$}
+\ENSURE{Pareto-optimal offloading policies $\mathcal{P}^*$}
+
+\STATE{Initialize population $\mathcal{P}_0$ with $N$ random MLP genomes}
+
+\FOR{$g = 0$ to $G_{\max}-1$}
+    \STATE{\textbf{Evaluate:} For each individual $\chi_i \in \mathcal{P}_g$}
+    \STATE{\quad Simulate offloading with MLP weights from $\chi_i$}
+    \STATE{\quad Compute objectives: $f_L$ (latency), $f_E$ (energy), $f_{TTR}$ (timeout rate)}
+
+    \STATE{\textbf{Select:} Create mating pool $\mathcal{M}_g$ using multi-objective selection}
+    \STATE{\quad (NSGA-II\: non-dominated sorting + crowding distance)}
+    \STATE{\quad (NPGA\: Pareto tournament selection)}
+
+    \STATE{\textbf{Reproduce:} Generate offspring $\mathcal{Q}_g$}
+    \FOR{$i = 1$ to $N$}
+        \STATE{Select parents $\chi_p, \chi_q$ from $\mathcal{M}_g$}
+        \STATE{Apply crossover (prob. $p_c$) and mutation (prob. $p_m$)}
+        \STATE{Add offspring to $\mathcal{Q}_g$}
+    \ENDFOR{}
+
+    \STATE{\textbf{Replace:} Form next generation $\mathcal{P}_{g+1}$ from $\mathcal{P}_g$ and $\mathcal{Q}_g$}
+\ENDFOR{}
+
+\RETURN{Non-dominated solutions from final population}
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Deep Q-Learning}\label{subsec:dqrl}
+
+DQL is well-suited for IoT offloading because (i) the environment state (CPU, buffer, bandwidth, task attributes) evolves over time, (ii) each offloading decision alters subsequent states and tasks, and (iii) a reward can be assigned at each step (e.g., penalizing task failures or excessive latency).
+
+\paragraph{Core Algorithm}
+A neural network approximates the Q-function, estimating the long-term value of choosing an action (offloading to a particular node) in a given state. Training leverages mini-batches from an experience replay buffer of past transitions \((s,a,r,s')\). Iteratively, these Q-values converge, leading to improved decisions over time.
+
+\paragraph{Workflow}
+The DQL workflow, as detailed in Algorithm~\ref{alg:dqrl_iot_offloading}, begins with initialization where an environment is built reflecting a specific scenario with fog/cloud nodes and tasks, an IoT task dataset is split into training/testing sets, and the neural network is configured with parameters such as hidden layers and learning rate. At each step, the agent constructs an observation by creating a flattened vector of node resources including free CPU, buffer, and link bandwidth, which the neural network uses to estimate Q-values for each node. Action selection follows an \(\varepsilon\)-greedy policy where with probability \(\varepsilon\), a random node is chosen for exploration, while otherwise the node with the highest Q-value is selected for exploitation. The environment is then updated as the chosen node processes the task, with the simulation advancing until the task completes or another event occurs such as queue filling or deadline miss, potentially causing task failure. Upon task completion or failure, a reward \(r\) is calculated and the transition \((s,a,r,s')\) is stored in the replay buffer, where the reward function is defined as:
+\[
+\textit{r} = 
+\begin{cases}
+\lambda_0, & \text{if task fails};\\[4pt]
+\lambda_1 \,\dfrac{L_{\text{task}}}{\max(L_{\text{epoch}})} 
+\;+\;
+\lambda_2 \,\dfrac{E_{\text{task}}}{\max(E_{\text{epoch}})},
+& \text{otherwise}.
+\end{cases}
+\]
+Here, \(\lambda_0\) (often negative/zero) penalizes failure, \(L_{\text{task}}, E_{\text{task}}\) are normalized by epoch maxima, and \(\lambda_1, \lambda_2\) tune the importance of latency and energy, respectively. Finally, after a certain number of tasks, transitions are sampled from the replay buffer for training updates, where the Q-learning target is computed as \(Q_{\text{target}} = r \;+\; (1 - \mathbf{1}_{\text{done}})\,\gamma\, \max_{a'} Q(s',a')\), and the network is trained using methods such as MSE loss to align predicted Q-values with \(Q_{\text{target}}\), with Q-value estimates converging over multiple epochs.
+
+\paragraph{Key Observations}
+Several key observations emerge from the DQL approach. Failure penalties implemented through a negative \(\lambda_{0}\) can strongly discourage decisions that often cause task failures, providing a direct mechanism to avoid poor offloading choices. Metric normalization achieved by dividing latency and energy by epoch-wide maxima ensures bounded values for stable learning, preventing any single metric from dominating the reward signal. Metric emphasis can be adjusted by tuning \(\lambda_{1,2}\) to shift the balance between minimizing latency and saving energy, allowing the system to be configured for different optimization priorities. Finally, architectural flexibility is maintained since although an MLP is standard, more sophisticated models such as Transformers can replace or extend the MLP while retaining the same DQL pipeline.
+
+\subsubsection{MLP-Based DQL}\label{subsubsec:mlp_dqrl}
+MLP-based DQL mirrors the MLP structure used in genetic algorithms, but instead of evolving weights, it trains them via Q-learning. The architecture consists of a feed-forward MLP that processes the current system state including CPU, buffer, bandwidth, and other relevant metrics, and outputs Q-values per node to guide the offloading decision. The policy employs an \(\varepsilon\)-greedy strategy that balances exploration and exploitation, ensuring the agent can discover new promising strategies while leveraging learned knowledge. The reward definition encodes latency, energy, and failures into a comprehensive reward function that captures the multi-objective nature of the offloading problem. Batch updates are performed by sampling from a replay buffer, which helps stabilize training and reduce correlation among transitions, leading to more robust learning dynamics.
+
+
+\subsubsection{Transformer-based DQL}\label{subsubsec:transformers}
+
+Transformer architectures~\citep{vaswani2023attentionneed} leverage multi-head self-attention to model complex relationships across various domains, despite often having high parameter counts. Task offloading is no exception, as shown by~\citet{gholipour_tpto_2023}, where a PPO-based policy was employed for Transformers. In the present work, two Transformer-based DQL variants are introduced to enable task offloading across multiple nodes:
+
+\paragraph{NOTE}\label{par:note}
+
+NOTE encodes each node’s available resources (CPU, buffer, and bidirectional link bandwidth) into an embedding vector. A positional encoding is then added to identify each node’s location in the topology. A Transformer encoder stack processes these node embeddings in parallel, enabling the model to learn both pairwise and global context. Finally, a feed-forward projection estimates the Q-value for each node, guiding the offloading decision. Because NOTE primarily targets node-level features, tasks are treated in an aggregated manner.
+
+\begin{itemize}
+    \item \textbf{Node Embeddings:} CPU frequency, buffer size, and upstream/downstream bandwidth are first passed through a fully connected layer to produce an embedding of dimension \(\displaystyle d_{\text{model}}\), where \(d_{\text{model}}\) is the hidden dimension of the model. Concatenating all node embeddings yields a tensor of size \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\), where \(n_{\text{nodes}}\) is the total number of nodes in the environment.
+    \item \textbf{Positional Encoding:} Trainable parameters that characterize each node’s position in the network topology. These embeddings also form a \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\) matrix.
+    \item \textbf{Transformer Encoder:} Multi-head self-attention highlights potential bottlenecks and optimal resource matches among the nodes. Residual connections and layer normalization are used, followed by a feed-forward sublayer with a GELU activation~\citep{hendrycks2023gaussianerrorlinearunits}. This encoder block is repeated \(N\) times.
+    \item \textbf{Output Layer:} A fully connected layer projects the encoded representations to Q-values, producing one scalar per node. The node with the highest Q-value is then chosen for offloading.
+\end{itemize}
+
+\begin{figure}[H]\label{fig:note_architecture}
+    \centering
+    \includegraphics[width=0.6\linewidth]{figs/nodeformer_architecture.png}
+    \caption{NOTE Architecture}
+\end{figure}
+
+\paragraph{T-NOTE}\label{par:T-NOTE}
+
+T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and CPU-cycle requirements). These task features are passed through a fully connected layer to produce a vector of size \(d_{\text{model}}\). The resulting vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and node positional encodings before entering the Transformer encoder. Task-specific positional encoding can be combined or managed separately, allowing the model to capture task characteristics through shared attention. While including task information enables the Transformer encoder to more accurately learn interactions between node resources and task demands, it also increases the complexity of each DQL state. This added complexity sometimes leads to greater model instability, as rapid changes in the task dimension can cause oscillations in policy behavior. Consequently, NOTE (which omits explicit task embeddings) may remain advantageous in scenarios where a simpler, more stable representation is desired.
+
+
+\begin{figure}[H]\label{fig:t-note_architecture}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/taskformer_architecture.png}
+    \caption{T-NOTE Architecture}
+\end{figure}
+
+
+\begin{algorithm}[H]
+\caption{Deep Q-Reinforcement Learning for IoT Task Offloading}\label{alg:dqrl_iot_offloading}
+\begin{algorithmic}[1]
+\REQUIRE{Environment $\mathcal{E}$, task dataset $\mathcal{D}$, hyperparameters $\{\alpha, \gamma, \epsilon_0, \epsilon_{\text{decay}}, \lambda_0, \lambda_1, \lambda_2\}$}
+\ENSURE{Trained Q-network policy $\pi^*$}
+
+\STATE{Initialize Q-network $Q_\theta$ with random parameters $\theta$}
+\STATE{Initialize experience replay buffer $\mathcal{B} \leftarrow \emptyset$}
+\STATE{Set exploration rate $\epsilon \leftarrow \epsilon_0$}
+
+\FOR{epoch $e = 1$ to $E_{\max}$}
+    \STATE{Initialize epoch metrics: $L_{\max}^{(e)} \leftarrow 0$, $E_{\max}^{(e)} \leftarrow 0$}
+
+    \FOR{each task $\tau_i \in \mathcal{D}$ ordered by generation time}
+        \STATE{Wait until $t_{\text{current}} \geq \tau_i.\text{arrival\_time}$}
+        \STATE{Construct state vector $s_i$ from system resources/task features}
+
+        \STATE{\textbf{Action Selection:}} 
+        \IF{$\text{rand}() < \epsilon$}
+            \STATE{$a_i \leftarrow$ random edge node}
+        \ELSE{}
+            \STATE{$a_i \leftarrow \arg\max_{a} Q_\theta(s_i, a)$}
+        \ENDIF{}
+        
+        \STATE{Execute offloading action $a_i$ and simulate task execution}
+        \STATE{Observe next state $s_{i+1}$ and compute reward:}
+        \STATE{
+        \[
+        r_i = \begin{cases}
+        \lambda_0 & \text{if task execution fails} \\[0.5em]
+        -\lambda_1 \cdot \frac{L_i}{L_{\max}^{(e)}} - \lambda_2 \cdot \frac{E_i}{E_{\max}^{(e)}} & \text{otherwise}
+        \end{cases}
+        \]
+        }
+        
+        \STATE{Store transition $(s_i, a_i, r_i, s_{i+1})$ in $\mathcal{B}$}
+        
+        \IF{$|\mathcal{B}| \geq$ batch\_size \OR{} end of epoch}
+            \STATE{Sample mini-batch $\mathcal{M}$ from $\mathcal{B}$}
+            \FOR{each $(s, a, r, s') \in \mathcal{M}$}
+                \STATE{Compute target: $y = r + \gamma \cdot \max_{a'} Q_\theta(s', a')$}
+            \ENDFOR{}
+            \STATE{Update Q-network: $\theta \leftarrow \theta - \alpha \nabla_\theta \mathcal{L}(\theta)$}
+            \STATE{where $\mathcal{L}(\theta) = \mathbb{E}_{(s,a,r,s') \sim \mathcal{M}} \big[{(Q_\theta(s,a) - y)}^2\big]$}
+            \STATE{Decay exploration: $\epsilon \leftarrow \epsilon \cdot \epsilon_{\text{decay}}$}
+        \ENDIF{}
+    \ENDFOR{}
+\ENDFOR{}
+
+\RETURN{Optimal policy $\pi^*(s) = \arg\max_a Q_\theta(s,a)$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Computational Complexity}
+
+The computational complexity of neural network models during inference is primarily determined by their architecture and is independent of the training method. However, training complexity varies significantly based on the optimization algorithm employed. Below, we compare the training-time complexities for Multi-Layer Perceptrons (MLPs) trained with Deep Q-Learning (DQL) and Genetic Algorithms (GAs), as well as Transformers trained with DQL\. These approaches are particularly relevant in scenarios where standard supervised learning is infeasible, such as reinforcement learning environments or non-differentiable optimization landscapes. We focus on the key factors influencing training costs, assuming similar network architectures where applicable for fair comparison.
+
+\subsubsection{MLP Trained with DQL}
+For an MLP with $L$ hidden layers, where $d_l$ denotes the number of neurons in layer $l$ (including input dimension $d_0$ and output dimension $d_{L+1}$), the cost of a single forward and backward pass, $C$, is
+\[
+C = \mathcal{O}\!\left( \sum_{l=1}^{L+1} d_l \cdot d_{l-1} \right).
+\]
+DQL, a reinforcement learning method, involves sequential interactions with an environment, where the model learns to maximize cumulative rewards through trial-and-error. This requires $E$ episodes, each with $T$ time steps, during which the network performs forward passes to select actions, receives rewards, and updates via backpropagation (often using experience replay and target networks for stability). The overall training complexity is thus approximated as
+\[
+\mathcal{O}(E \cdot T \cdot C).
+\]
+This is substantially higher than supervised learning due to the need for exploration, temporal credit assignment, and handling sparse or delayed rewards, leading to slower convergence and greater computational demands.
+
+\subsubsection{MLP Trained with GA}
+Using the same MLP architecture, the per-forward-pass cost remains
+\[
+C = \mathcal{O}\!\left( \sum_{l=1}^{L+1} d_l \cdot d_{l-1} \right).
+\]
+However, GAs employ a population-based evolutionary search, evaluating a population of $P$ candidate weight sets over $G$ generations. Fitness assessment for each individual typically involves forward passes across a dataset of $N$ samples (or simulated environments). Evolutionary operators (selection, crossover, mutation) add minor overhead but are dominated by evaluations. The training complexity is therefore
+\[
+\mathcal{O}(G \cdot P \cdot N \cdot C).
+\]
+Compared to DQL, GA training can be even more computationally intensive in large populations or datasets, as it lacks gradient guidance and relies on black-box optimization. This often results in lower sample efficiency but can excel in rugged, non-differentiable landscapes where gradients are unavailable.
+
+\subsubsection{Transformer Trained with DQL}
+Transformers introduce a different architectural complexity. For a model with $L$ layers, hidden size $d$, and sequence length $n$, the cost of a single forward and backward pass, $C$, is
+\[
+C = \mathcal{O}\!\left( L \cdot (n^2 d + n d^2) \right),
+\]
+driven by quadratic self-attention and linear feed-forward operations. When trained with DQL, the process mirrors MLP-DQL\: $E$ episodes of $T$ time steps each, involving action selection, reward feedback, and updates. The training complexity is
+\[
+\mathcal{O}(E \cdot T \cdot C).
+\]
+Relative to MLP-based DQL, Transformer’s higher per-pass cost ($C$)—due to sequence-length scaling—amplifies the overall expense, making it particularly demanding for long-sequence tasks. Like MLP-DQL, it suffers from reinforcement learning's inherent inefficiencies but benefits from Transformer’s strong representational power in sequential decision-making.
+
+
+
+\section{Performance Evaluation}\label{sec:performance_evaluation}
+
+
+\subsection{Experimentation Setup}
+
+All experiments were conducted on two distinct hardware configurations.  
+
+\paragraph{DQRL Experiments.}  
+The DQRL algorithms (both MLP-based and Transformer-based) were trained on a workstation equipped with:
+\begin{itemize}
+    \item CPU\: 16 cores
+    \item RAM\: 64 GB
+    \item GPU\: NVIDIA Tesla P100 with 16 GB memory
+\end{itemize}
+This configuration provided sufficient computational power to accelerate neural network training on large batches.  
+
+\paragraph{GA Experiments.}  
+The GA-based methods (NPGA, NSGA-II) were executed on a high-performance server with:
+\begin{itemize}
+    \item CPU\: 192 cores
+    \item RAM\: 256 GB
+\end{itemize}
+This setup enabled extensive parallelism, allowing multiple individuals to be evaluated simultaneously and thus accelerating convergence for evolutionary algorithms.
+
+
+\subsubsection{Dataset}\label{subsec:dataset}
+
+
+
+A real IoT task trace collected in Islamabad, Pakistan, is utilized as described by~\cite{aazam_cloud_2022}. This dataset contains heterogeneous IoT jobs (commonly referred to as \emph{tuples}).
+
+The dataset covers diverse devices (sensors, dumb objects, mobiles, actuators, and location-based nodes). Originally, data were sampled every minute over a one-hour period. To avoid clustering all tasks within the same second of each minute, tasks were uniformly distributed across that minute, producing a more realistic workload. The statistics of these tasks are reported in Table~\ref{tab:task-statistics}
+
+\begin{table*}[h!]\label{tab:task-statistics}
+\centering
+\caption{Statistical Summary of Generated Tasks}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Statistic} & \textbf{Generation Time (s)} & \textbf{Task Size (MB)} & \textbf{Cycles/Bit} & \textbf{Trans. Bit Rate (MB/s)} & \textbf{DDL (s)} \\ \hline
+Count & 30,000 & 30,000 & 30,000 & 30,000 & 30,000 \\ \hline
+Mean & 1891 & 206 & 344 & 88 & 60 \\ \hline
+Std Dev & 1094 & 75 & 351 & 39 & 23 \\ \hline
+Min & 0 & 80 & 50 & 20 & 20 \\ \hline
+25\% & 941 & 170 & 100 & 80 & 39 \\ \hline
+50\% & 1884 & 220 & 200 & 90 & 60 \\ \hline
+75\% & 2856 & 270 & 700 & 100 & 79 \\ \hline
+Max & 3780 & 300 & 1200 & 150 & 99 \\ \hline
+\end{tabular}%
+}
+\end{table*}
+
+This dataset was adapted for the RayCloudSim framework, retaining only the most pertinent variables and appending additional information (for example, the number of cycles per bit). The units—originally unspecified in the source—were standardized to align with typical IoT node specifications, thereby ensuring consistency and accuracy in subsequent simulations and experiments.
+
+\subsubsection{System Resources and Topology}\label{subsec:system_resources_topology}
+
+To align with the dataset location, we designate the GG in Islamabad, Pakistan as the Edge node. The Fog nodes are configured as Micro-Data Centers (MDCs) distributed across various cities in Pakistan to provide regional computational resources. For the Cloud layer, we select data centers based on Google's global data center locations \citep{googleDataCenters}, specifically choosing the geographically nearest data centers to Pakistan to minimize latency overhead and ensure realistic network conditions.
+
+
+In Figure~\ref{fig:used_architecture}, a network is shown to consist of eight nodes (\textit{Edge}, \textit{Fog}, and \textit{Cloud}) connected by multiple links with diverse bandwidth capacities. The \textit{edge node} (\texttt{e0}) is equipped with a low CPU frequency and a limited task buffer, whereas the \textit{fog nodes} (\texttt{f0}, \texttt{f1}, \texttt{f2}, \texttt{f3}, \texttt{f4}) has intermediate CPU frequencies and queue sizes. The \textit{cloud nodes} (\texttt{c0}, \texttt{c1}) exhibits the highest CPU frequencies and large buffer capacities, although they may incur higher idle power consumption and larger network latency due to their remote location.
+
+\begin{figure}[H]\label{fig:used_architecture}
+    \centering
+    \includegraphics[width=0.75\linewidth]{figs/used_architecture.png}
+    \caption{Used Architecture featuring Edge (Global Gateway), Fog (MDCs), and Cloud.}
+\end{figure}
+
+
+In Table~\ref{tab:node-specifications}, node specifications are listed, including Millions of Instructions Per Second (MIPS), the buffer size in GB, the up and down bandwidth from/to e0 (the global gateway) in GB and power coefficients in W. The network links range from 700 bps to 50,000 bps, forming a heterogeneous environment suitable for analyzing resource allocation and routing strategies under variable link constraints.
+
+
+\begin{table*}[h!]\label{tab:node-specifications}
+\centering
+\caption{Detailed Specifications of Nodes}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|l|}
+\hline
+\textbf{Node} & \textbf{Type} & \textbf{ID} & \textbf{MIPS} & \textbf{Buffer} & \textbf{Up BW} & \textbf{Down BW} & \textbf{Idle P} & \textbf{Exec P} & \textbf{Location} \\
+\hline
+e0 & Edge & 0 & 10 & 4 & -- & -- & 3 & 10 & Islamabad, PK \\ \hline
+f0 & Fog & 1 & 110 & 16 & 2.5 & 1.7 & 30 & 150 & Multan, PK \\ \hline
+f1 & Fog & 2 & 50 & 6 & 1 & 700 & 15 & 50 & Gilgit, PK \\ \hline
+f2 & Fog & 3 & 95 & 12 & 2 & 1.5 & 25 & 120 & Karachi, PK \\ \hline
+f3 & Fog & 4 & 85 & 10 & 1.5 & 1.2 & 20 & 100 & Lahore, PK \\ \hline
+f4 & Fog & 5 & 75 & 8 & 1.2 & 1 & 20 & 100 & Peshawar, PK \\ \hline
+c0 & Cloud & 6 & 500 & 51 & 3 & 3 & 300 & 1100 & Singapore \\ \hline
+c1 & Cloud & 7 & 500 & 51 & 3 & 3 & 250 & 1000 & Belgium \\ \hline
+\end{tabular}%
+}
+\end{table*}
+
+
+\subsection{Hyperparameters}
+
+Since our modeling framework assigns zero latency and energy values to tasks that fail to be successfully offloaded, the primary optimization objective becomes the minimization of the \emph{task rejection rate}. This constraint is essential to prevent model degeneration, where the system could exploit the null assignment by deliberately rejecting tasks to artificially improve energy and latency performance metrics.
+
+To further stabilize optimization, we adopt a hierarchical prioritization scheme that emphasizes latency over energy efficiency, as latency more directly impacts user experience and system responsiveness. This prioritization is reflected in the reward weight hierarchy:
+\[
+\lambda_0 \gg \lambda_1 > \lambda_2.
+\]
+
+Based on empirical evaluation of different configurations using a Multi-Layer Perceptron (MLP) architecture trained with Deep Q-Reinforcement Learning (DQRL), we selected the following reward weight distribution:
+\[
+\textbf{Reward weights } (\lambda) = [1,\; 0.1,\; 0.05].
+\]
+
+Finally, to improve clarity and maintain consistency across training and evaluation, the energy consumption metric is reported in terms of power consumption throughout the experimental analysis.
+
+
+\subsubsection{Model Configurations}
+The complete hyperparameter specifications are detailed in Table~\ref{tab:model_specifications}. The MLP architectural parameters remain consistent across both Genetic Algorithm (GA)-based approaches and DQRL implementations to ensure comparative validity.
+
+
+\begin{table}[H]\label{tab:model_specifications}
+\centering
+\caption{Model Specifications}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Parameter} & \textbf{Transformer Model} & \textbf{MLP Model} \\ \hline
+Hidden dimension ($d_{\text{model}}$) & 64 & 64 \\ \hline
+Number of layers ($n_{\text{layers}}$) & 6 & 3 \\ \hline
+Number of heads ($n_{\text{heads}}$) & 4 & - \\ \hline
+MLP ratio & 4 & - \\ \hline
+Dropout & 0.2 & 0 \\ \hline
+Activation function & GELU & ReLU \\ \hline
+Input features & \{cpu, bw, buffer\} & \{cpu, bw, buffer\} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Heuristic Baseline Methods}
+We implement two baseline heuristic approaches for comparative evaluation, namely, \emph{Round Robin (RR)} and \emph{Greedy}.
+
+In RR tasks are cyclically distributed among nodes, with each node receiving tasks in turn before cycling back to the first node. This ensures basic load balancing but ignores node heterogeneity such as CPU frequencies and buffer sizes, potentially causing inefficiencies under varied workloads. 
+
+Greedy methods assign tasks based on immediate resource availability or specific cost metrics, such as selecting the node with the highest remaining CPU capacity. While easily implemented and computationally efficient, greedy strategies often forgo long-term, globally optimal decisions in favor of immediate local optima.
+
+\subsection{MLP Results and Comparison}\label{subsec:ga_vs_dqrl}
+
+Both the GA-based (NSGA II and NPGA) and DQRL methods can train a MLP with 6,664 trainable parameters, using the same input features (CPU, buffer, and bandwidth). However, each approach yields distinct convergence properties and solution spaces.
+
+\subsubsection{Convergence Behavior}
+\paragraph{GA-based}
+The GA-based approach is more sensitive to initial population generation, and convergence behaviors can vary widely with different random seeds. As shown in Figure~\ref{fig:nsga2-mlp-training-epoch} for NSGA II, wich is almost similar to NPGA, training often exhibits fluctuations when searching for Pareto-optimal solutions, especially in the early stages of evolution. Although the algorithm eventually discovers high-quality solutions, it may require many generations (e.g., 100 generations with 40 individuals each) to achieve consistency.
+
+\begin{figure}[H]\label{fig:nsga2-mlp-training-epoch}
+    \centering
+    \includegraphics[width=0.95\linewidth]{figs/nsga2_mlp_training_epoch.png}
+    \caption{Training Convergence for MLP with NSGA2 for the best individual, selected according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\).}    
+\end{figure}
 
 
 
