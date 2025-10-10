@@ -69,45 +69,44 @@
 %%            country={}}
 %% \fntext[label3]{}
 
-\title{NOTE and T-NOTE an efficient transformer encoder for IoT task offloading in edge-fog-cloud computing environment
-} %% Article title
+\title{NOTE and T-NOTE: Efficient Transformer-Based Encoders for IoT Task Offloading in Edge-Fog-Cloud Computing} %% Article title
 
 %% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \affiliation[label1]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
-%%
-%% \affiliation[label2]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
+\author[arthur,sonia,lylia]{Arthur Garon, Sonia Yassa, Lylia Alouache}
+\affiliation[arthur,sonia,lylia]{organization={CY Cergy Paris Université, ENSEA, ETIS},%Department and Organization
+            addressline={},
+            city={Cergy},
+            postcode={95000},
+            state={Île-de-France},
+            country={France}}
 
-\author{} %% Author name
+% \affiliation[label2]{organization={},
+%             addressline={},
+%             city={},
+%             postcode={},
+%             state={},
+%             country={}}
 
-%% Author affiliation
-\affiliation{organization={},%Department and Organization
-            addressline={}, 
-            city={},
-            postcode={}, 
-            state={},
-            country={}}
+% \author{} %% Author name
 
+% %% Author affiliation
+% \affiliation{organization={},%Department and Organization
+%             addressline={}, 
+%             city={},
+%             postcode={}, 
+%             state={},
+%             country={}}
+
+% 
 
 % \begin{abstract}
 % The proliferation of Internet of Things (IoT) devices has created unprecedented challenges in resource management and task offloading across edge-fog-cloud computing environments. With over 30 billion connected devices generating approximately 2 exabytes of data daily, efficient task allocation strategies are critical for maintaining Quality of Service (QoS) while minimizing latency, energy consumption, and task failure rates. This paper addresses these challenges by proposing two novel Transformer-based architectures for IoT task offloading: NOTE (Node-Oriented Transformer Encoder) and T-NOTE (Task and Node-Oriented Transformer Encoder). Both models leverage Deep Q-Learning (DQL) to learn optimal offloading policies in dynamic, heterogeneous computing environments. NOTE focuses on node-level features such as CPU frequency, buffer capacity, and bandwidth, while T-NOTE extends this approach by incorporating task-specific attributes including size, deadline constraints, and computational requirements. We introduce an open-source offloading framework based on a realistic topology and a real-world dataset of IoT tasks, in order to evaluate the performance of the proposed architectures. Comparative analysis against baseline heuristic methods (Random, Round Robin, Greedy) and traditional Multi-Layer Perceptron (MLP)-based DQL demonstrates that T-NOTE achieves superior performance across all key metrics, reducing task throw rate from 0.19\% to 0\%, decreasing latency by 16.6\%, and improving energy efficiency by 6.4\% compared to the greedy baseline. Additionally, we explore multi-objective Genetic Algorithms (NPGA and NSGA-II) for training MLP policies, providing insights into Pareto-optimal trade-offs between competing objectives. The proposed Transformer-based approaches demonstrate remarkable robustness and adaptability to dynamic network conditions, offering significant improvements over conventional optimization techniques. All implementations, datasets, and experimental scenarios are made publicly available to facilitate reproducibility and advance research in intelligent task offloading for IoT systems.
 % \end{abstract}
 
-
-
 \begin{abstract}
-The proliferation of Internet of Things (IoT) devices has created unprecedented challenges in resource management and task offloading across edge-fog-cloud computing environments. This paper addresses these challenges by proposing two novel Transformer-based architectures for IoT task offloading: NOTE (Node-Oriented Transformer Encoder) and T-NOTE (Task and Node-Oriented Transformer Encoder). Both models leverage Deep Q-Learning (DQL) to learn optimal offloading policies in dynamic, heterogeneous computing environments. NOTE focuses on node-level features such as CPU frequency, buffer capacity, and bandwidth, while T-NOTE extends this approach by incorporating task-specific attributes including size, deadline constraints, and computational requirements. This work introduce an open-source offloading framework based on a realistic topology and a real-world dataset of IoT tasks. Comparative analysis against baseline heuristic methods (Random, Round Robin, Greedy) and traditional Multi-Layer Perceptron (MLP)-based DQL demonstrates that T-NOTE achieves superior performance across all key metrics, reducing task throw rate from 0.19\% to 0\%, decreasing latency by 16.6\%, and improving energy efficiency by 6.4\% compared to the greedy baseline. Additionally, we explore multi-objective Genetic Algorithms (NPGA and NSGA-II) for training MLP policies, providing insights into Pareto-optimal trade-offs between competing objectives. All implementations, datasets, and experimental scenarios are made publicly available to facilitate reproducibility and advance research in intelligent task offloading for IoT systems.
+The proliferation of Internet of Things (IoT) devices has created unprecedented challenges in resource management and task offloading across edge-fog-cloud computing environments. This paper addresses these challenges by proposing two novel Transformer-based architectures for IoT task offloading: NOTE (Node-Oriented Transformer Encoder) and T-NOTE (Task and Node-Oriented Transformer Encoder). Both models leverage Deep Q-Learning (DQL) to learn optimal offloading policies in dynamic, heterogeneous computing environments. NOTE focuses on node-level features such as CPU frequency, buffer capacity, and bandwidth, while T-NOTE extends this approach by incorporating task-specific attributes including size, deadline constraints, and computational requirements. Additionally, multi-objective Genetic Algorithms (NPGA and NSGA-II) were adapted for training MLP policies, providing insights into Pareto-optimal trade-offs between competing objectives. Comparative analysis demonstrates that T-NOTE achieves superior performance across all key metrics, reducing task throw rate from 0.19\% to 0\%, decreasing latency by 16.6\%, and improving energy efficiency by 6.4\% compared to the greedy baseline. One of the solution of GA-based + MLP methods successfully reached the solution identified by the DQL + MLP. This is confirming the consistency of both approaches. An open-source offloading framework, including proposed offloading strategies, based on a realistic topology and a real-world dataset of IoT tasks is proposed and made publicly available. 
 \end{abstract}
+
 
 %%Graphical abstract
 \begin{graphicalabstract}
@@ -124,7 +123,7 @@ The proliferation of Internet of Things (IoT) devices has created unprecedented 
 
 %% Keywords
 \begin{keyword}
-Internet of Things \sep Task offloading \sep Edge computing \sep Fog computing \sep Cloud computing \sep Transformer architecture \sep Deep Q-Learning \sep Deep reinforcement learning \sep Multi-objective optimization \sep Genetic algorithms \sep Resource allocation \sep Quality of Service \sep Energy efficiency \sep Latency optimization \sep Self-attention mechanism
+Task offloading \sep Resource allocation \sep Edge-Fog-Cloud computing \sep Transformer architecture \sep Deep Q-Learning \sep Multi-objective optimization \sep Genetic algorithms \sep Energy \sep Latency \sep Task Throw Rate
 
 %% PACS codes here, in the form: \PACS code \sep code
 
@@ -943,9 +942,9 @@ NOTE encodes only node-level features (CPU, buffer, bandwidth), aggregated over 
 \end{figure}
 
 \subsubsection{T-NOTE}
-T-NOTE augments NOTE by including task attributes (size, deadline, CPU-cycle requirements). These additional features allow the model to make more informed offloading decisions, resulting in faster convergence and often superior performance in terms of latency and success rate. Figure~\ref{fig:T-NOTE-score-plot} shows that T-NOTE reaches an optimal solution around the third epoch, but then experiences slight performance degradation as training continues. This fluctuation may occur because:
 \begin{itemize}
     \item The task-specific embeddings introduce additional complexity, potentially causing the network to overfit or oscillate when new tasks arrive.
+T-NOTE augments NOTE by including task attributes (size, deadline, CPU-cycle requirements). These additional features allow the model to make more informed offloading decisions, resulting in faster convergence and often superior performance in terms of latency and success rate. Figure~\ref{fig:T-NOTE-score-plot} shows that T-NOTE reaches an optimal solution around the third epoch, but then experiences slight performance degradation as training continues. This fluctuation may occur because:
     \item DQL’s state representation depends on real-time task information, not just node-level resources.
 \end{itemize}
 Despite these variations, T-NOTE still surpasses NOTE in both speed of convergence and final performance, demonstrating the value of incorporating task-aware embeddings.
@@ -1179,14 +1178,16 @@ DQL + MLP
  & \underline{0.07} 
  & 4.16 
  & 385 \\
+ 
+
 
 \end{tabular}
-
 
 \caption{Comparison of MLP with DQL, NPGA, and NSGA2 on Pakistan test set.}\label{tab:mlp_comparison}
 \end{table*}
 
-%% Rajouter le choix de la selation
+%% Add how is pick the model for GA-based
+
 
 \paragraph{Trade-Off in Efficiency}
 A key advantage of DQL is the reduced computational burden—only one model is trained and updated across epochs (e.g., 10–20 epochs), compared to GA approaches that must evaluate a large population (e.g., 40 individuals) for multiple generations (e.g., 100). Hence, GA methods generally consume more time hours despite their ability to track multiple objectives.
@@ -1248,14 +1249,9 @@ A more extensive investigation of multi-objective genetic algorithms could provi
 Evaluating the proposed approaches on larger-scale networks with heterogeneous IoT devices, diverse application domains, and varying traffic patterns would validate their scalability and generalization capabilities. Transfer learning techniques could be investigated to enable pre-trained models to adapt rapidly to new deployment environments with minimal retraining.
 
 
-These research directions collectively aim to advance the state-of-the-art in intelligent task offloading for next-generation IoT systems, enabling more efficient, reliable, and sustainable edge-fog-cloud computing infrastructures.
-
  \bibliographystyle{elsarticle-harv} 
  \bibliography{references}
 
 \end{document}
 
 \endinput
-
-
-
