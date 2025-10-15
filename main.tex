@@ -153,9 +153,9 @@ In order to address these challenges, fog computing has emerged as a distributed
 
 Notwithstanding the advantages inherent in task offloading in fog computing, this process is encumbered by numerous challenges. Optimizing resource utilization, reducing energy consumption, and maintaining Quality of Service (QoS) require robust strategies due to the heterogeneous and dynamic nature of fog networks. Factors such as fluctuating workloads, mobility, and task diversity have been identified as contributing to an increase in the complexity of the situation. In order to address these challenges, innovative resource allocation techniques are required, including Machine Learning-based (ML) methods, auction models, and heuristic optimization as~\cite{fahimullah_review_2022} exhibits.
 
-Conventional resource management techniques frequently employ static heuristic approaches, which prove ineffective when confronted with the diverse and dynamic workloads that are characteristic of fog environments. These methods, when configured offline for specific scenarios, lack the scalability and flexibility required for real-time task offloading and resource optimization. Consequently, a substantial decline in performance is experienced as system demands increase~\citep{iftikhar_ai-based_2023}.
+Conventional resource management techniques frequently employ static heuristic approaches, which prove ineffective when confronted with the diverse and dynamic workloads that are characteristic of fog environments. They exhibit a deficiency in scalability and flexibility, which are prerequisites for real-time task offloading and resource optimization. Consequently, a substantial decline in performance is experienced as system demands increase~\citep{iftikhar_ai-based_2023}.
 
-To address this problem, metaheuristics such as GA have emerged as powerful optimization techniques capable of handling the multi-objective nature of fog computing task offloading. GAs excel in exploring complex solution spaces and finding near-optimal trade-offs between conflicting objectives such as latency minimization, energy efficiency, and resource utilization. Unlike traditional optimization methods that often focus on single objectives, multi-objective genetic algorithms can simultaneously optimize multiple performance criteria, making them particularly suitable for fog computing environments where various QoS parameters must be balanced. The evolutionary nature of GAs allows them to adapt to dynamic network conditions and heterogeneous resource availability, providing robust solutions for real-time task offloading decisions.
+To address this problem, metaheuristics such as GA have emerged in the field of offloading as powerful optimization techniques capable of handling the multi-objective nature of fog computing task offloading. GAs excel in exploring complex solution spaces and finding near-optimal trade-offs between conflicting objectives such as latency minimization, energy efficiency, and resource utilization. Unlike traditional optimization methods that often focus on single objectives, multi-objective genetic algorithms can simultaneously optimize multiple performance criteria, making them particularly suitable for fog computing environments where various QoS parameters must be balanced. The evolutionary nature of GAs allows them to adapt to dynamic network conditions and heterogeneous resource availability, providing robust solutions for real-time task offloading decisions.
 
 Recent advancements in the field of Artificial Intelligence (AI), particularly deep reinforcement learning (DRL), have demonstrated considerable potential in addressing the intricacies of task offloading in fog environments. Research has demonstrated the efficacy of AI-driven approaches in reducing latency, energy consumption, and operational costs. As~\cite{fahimullah_review_2022} demonstrates in their review, techniques such as centralized Dueling Deep Q-Networks (DDQNs), decentralized learning models, and multi-agent reinforcement learning have been employed to optimize offloading policies and resource allocation. Furthermore, hybrid strategies that integrate artificial intelligence with conventional methods have demonstrated efficacy in heterogeneous fog environments~\citep{mishra_collaborative_2023}.
 
@@ -170,7 +170,7 @@ To address these gaps, this work makes the following key contributions:
 
     \item This work also puts forth a model for offloading in hybrid environments that considers a substantial number of parameters for the QoS. To further expand upon the existing body of knowledge, an adaptation of a scenario with a real dataset was implemented within the framework of RayClousSim. We let open-source the scenario and the dataset for the community\footnote{\url{https://github.com/tutur90/Task-Offloading-Fog}}. All algorithms used, including NOTE and T-NOTE, are also implemented in this framework.
 
-    \item Additionally, a comparative analysis was conducted between the GAs and a Deep Q-Learning (DQL) approach. The implementation of these algorithms in the training of a MLP constitutes a pivotal element of the study. The GA approach is employed in a dynamic setting, thereby enabling the MLP to be optimized for multi-objective offloading in real time.
+    \item Additionally, a comparative analysis was conducted between the GAs and a DQL approach. The implementation of these algorithms in the training of a MLP constitutes a pivotal element of the study. The GA approach is employed in a dynamic setting, thereby enabling the MLP to be optimized for multi-objective offloading in real time.
 
 \end{itemize}
 
@@ -188,44 +188,48 @@ Task offloading in Fog/Cloud environments is a relatively recent research area c
 \subsection{Deterministic Approaches}
 Deterministic algorithms provide a direct method for solving the task offloading problem. For instance, the optimal task assignment algorithm proposed by Yan \textit{et al.}~\cite{yan_optimal_2020} employs a three-step approach: (i) assuming the offloading decisions are pre-determined, (ii) deriving closed-form expressions for optimal offloading, and (iii) implementing bisection search and a one-climb policy. This approach effectively reduces energy consumption and execution time for IoT tasks in Mobile Edge Computing (MEC) systems.
 
-Nevertheless, the task offloading problem is considered NP-hard, as demonstrated in~\cite{guo_algorithmics_2024, jin_task_2024, sarkar_deep_2022}. Consequently, deterministic methods face scalability limitations, prompting the exploration of heuristic, metaheuristic, and AI-based approaches.
+Nevertheless, the task offloading problem is considered NP-hard, as demonstrated by~\cite{guo_algorithmics_2024, jin_task_2024, sarkar_deep_2022}. Consequently, deterministic methods are subject to scalability limitations, prompting the exploration of heuristic, metaheuristic, and AI-based approaches.
 
 
 \subsection{Heuristic and Metaheuristic Methods}
 
-Heuristic methods are well-suited for scaling in complex edge/cloud environments, as they avoid the exponential computational growth of deterministic algorithms \cite{zhang_survey_2024}. For example, the Deadline and Priority-aware Task Offloading (DPTO) algorithm \cite{adhikari_dpto_2020} schedules tasks by prioritizing delays and task priorities, selecting optimal devices to minimize overall offloading time.
+Heuristic methods are well-suited for scaling in edge/cloud environments, as they avoid the exponential computational growth of deterministic algorithms \cite{zhang_survey_2024}. For example, the Deadline and Priority-aware Task Offloading (DPTO) algorithm \cite{adhikari_dpto_2020} schedules tasks by prioritizing delays and task priorities, selecting optimal devices to minimize overall offloading time.
 
-Metaheuristic algorithms, known for their adaptability, have also shown strong performance.~\citep{bernard_d-npga_2024} introduced the Drafting Niched Pareto Genetic Algorithm (D-NPGA), which optimizes task offloading decisions and improves makespan and cost efficiency for IoT tasks in fog/cloud systems.
+Metaheuristic approaches have also been increasingly used for their ability to address the NP-hard nature of the task offloading. A recent and comprehensive survey by~\cite{rahmani_optimizing_2025} reviewed a wide range of metaheuristic algorithms, including Genetic Algorithms (GA), Particle Swarm Optimization (PSO), Ant Colony Optimization (ACO), and Grey Wolf Optimizer (GWO)—applied to task offloading in IoT environments. The review identified key strengths of these methods in balancing latency, energy consumption, and cost efficiency across heterogeneous fog-edge-cloud infrastructures.
+
+Multi-Objectives GA had also made there proof, \citep{bernard_d-npga_2024} introduced the Drafting Niched Pareto Genetic Algorithm (D-NPGA), which optimizes task offloading decisions and improves makespan and cost efficiency for IoT tasks in fog/cloud systems. This kind of algorithm are really efficient to find a set of Pareto-optimal solutions, allowing decision-makers to select the most appropriate trade-off based on specific requirements.
 
 More sophisticated methods use multiple approaches. For example, Energy-Efficient and Deadline-Aware Task Scheduling in Fog Computing (ETFC)~\cite{pakmehr_etfc_2024} employs a Support Vector Machine (SVM) to predict traffic on fog nodes and classify them as low- or high-traffic. Then, they use reinforcement learning (RL) on the low-traffic group and a non-dominated sorting genetic algorithm III (NSGA-III) on the high-traffic group to make the offloading decision. This allows both algorithms to perform better on adequate tasks.
 
-Metaheuristic approaches have gained attention for their ability to address the NP-hard nature of the task offloading problem with flexibility and adaptability. A recent and comprehensive survey by~\cite{rahmani_optimizing_2025} reviewed a wide range of metaheuristic algorithms—including Genetic Algorithms (GA), Particle Swarm Optimization (PSO), Ant Colony Optimization (ACO), and Grey Wolf Optimizer (GWO)—applied to task offloading in IoT environments. The review identified key strengths of these methods in balancing latency, energy consumption, and cost efficiency across heterogeneous fog-edge-cloud infrastructures. Their taxonomy also distinguishes between evolutionary and swarm-based algorithms, showing that hybrid models are increasingly used to adapt to dynamic network conditions. Despite their strengths, the authors noted limitations in scalability and real-time adaptability—areas where AI and deep learning techniques, such as DRL or transformers, may provide an edge.
+Despite their strengths, some limitations in scalability and in real-time adaptability persist, particularly in highly dynamic environments where task characteristics and network conditions frequently change. This has led to the exploration of AI-based methods, which can learn and adapt to such dynamics more effectively.
 
 
 \subsection{AI Approaches}
 
-Machine learning (ML) has recently demonstrated its efficacy in task offloading. For instance, decision tree classifiers\cite{suryadevara_energy_2021} determine whether tasks should be offloaded to the fog or cloud, resulting in reduced latency and energy consumption. Logistic regression models\cite{bukhari_intelligent_2022} have also been applied, estimating the probability of successful offloading by leveraging maximum likelihood estimation.
+Machine learning (ML) has recently demonstrated its efficacy in task offloading. For instance, decision tree classifiers~\citep{suryadevara_energy_2021} determine whether tasks should be offloaded to the fog or cloud, resulting in reduced latency and energy consumption. Logistic regression models~\citep{bukhari_intelligent_2022} have also been applied, estimating the probability of successful offloading by leveraging maximum likelihood estimation.
 
-Deep learning (DL), a subset of ML, deserves special attention due to its notable advances across various fields. 
+Deep learning (DL), a subset of ML, deserves special attention due to its dominance across a large subset of AI applications. 
 
-Basic deep neural networks (DNNs) have been applied to IoT offloading tasks, such as~\citet{sarkar_deep_2022}, where parallel DNNs optimize cost, energy consumption, and latency. However, deep reinforcement learning (DRL) is often preferred for its decision-making capabilities in dynamic environments.
+Basic deep neural networks (DNNs) have been applied to IoT offloading tasks, such as~\citet{sarkar_deep_2022}, where parallel DNNs optimize cost, energy consumption, and latency. However, DRL is often preferred for its decision-making capabilities in dynamic environments.
 
-For example, Jiang \textit{et al.}\cite{jiang_reinforcement_2021} utilized Deep Q-Learning (DQN) to identify optimal offloading policies and resource allocation strategies for user equipment in fog/cloud systems. Their approach combines a dueling deep Q-network for model pre-processing and a distributed deep Q-network for efficient task allocation.
+For example,~\cite{jiang_reinforcement_2021} utilized DQL to identify optimal offloading policies and resource allocation strategies for user equipment in fog/cloud systems. Their approach combines a dueling deep Q-network for model pre-processing and a distributed deep Q-network for efficient task allocation.
 
-Moreover, multi-agent DRL methods\cite{ren_deep_2021} have been employed to offload IoT tasks. Each IoT device trains its DRL model to select fog access points, followed by a greedy algorithm to determine cloud offloading. This approach demonstrates competitive performance in energy efficiency compared to exhaustive search and genetic algorithms.
+Moreover, multi-agent DRL methods~\citep{ren_deep_2021} have also been employed to offload IoT tasks. Each IoT device owns a DRL model and trains it to select fog access points, followed by a greedy algorithm to determine cloud offloading. This approach demonstrates competitive performance in energy efficiency compared to exhaustive search and genetic algorithms.
 
-Long Short-Term Memory (LSTM) networks, a type of recurrent neural network, are particularly suitable for the temporal dimensions of task offloading. Tu \textit{et al.}\cite{tu_task_2022} combined LSTM with DQN to predict task dynamics in real-time, leveraging observed edge network conditions and server load. This hybrid model significantly improved latency, offloading cost, and task throughput.
+Long Short-Term Memory (LSTM) networks, a type of recurrent neural network, are particularly suitable for the temporal dimensions of task offloading.~\cite{tu_task_2022} combined LSTM with DQL to predict task dynamics in real-time, leveraging observed edge network conditions and server load. This hybrid model significantly improved latency, offloading cost, and task throughput.
 
-Transformers, known for their revolutionary impact on natural language processing (NLP), have also been adapted for task offloading. Gholipour \textit{et al.}\cite{gholipour_tpto_2023} proposed TPTO, a transformer-based framework with Proximal Policy Optimization (PPO). Their model encodes task dependencies using a transformer encoder and employs an actor-critic framework trained with PPO to generate probability distributions for offloading actions, achieving state-of-the-art results in edge computing environments.
+Transformers, known for their revolutionary impact on natural language processing (NLP), have also been adapted for task offloading.~\cite{gholipour_tpto_2023} proposed TPTO, a transformer-based framework with Proximal Policy Optimization (PPO). Their model encodes task dependencies using a transformer encoder and employs an actor-critic framework trained with PPO to generate probability distributions for offloading actions, achieving state-of-the-art results in edge computing environments.
 
-While many existing offloading solutions rely on synthetic datasets and focus on Multi-access or Vehicular Edge Computing (MEC/VEC) scenarios~\cite{fahimullah_review_2022, tu_task_2022, gholipour_tpto_2023}, research specifically targeting fog computing remains limited. In particular, models such as Deep Neural Networks (DNNs)~\cite{sarkar_deep_2022} and Deep Q-Learning (DQL)~\cite{jiang_reinforcement_2021} have rarely been evaluated in realistic fog environments using real-world data.
+While many existing offloading solutions rely on synthetic datasets and focus on Multi-access or Vehicular Edge Computing (MEC/VEC) scenarios~\citep{fahimullah_review_2022, tu_task_2022, gholipour_tpto_2023}, research specifically targeting fog computing remains limited. In particular, models such as Deep Neural Networks (DNNs)~\citep{sarkar_deep_2022} and Deep Q-Learning (DQL)~\citep{jiang_reinforcement_2021} have rarely been evaluated in realistic fog environments using real-world data.
 
 Genetic Algorithms (GAs) are often static in nature, such as~\citet{bernard_d-npga_2024, pakmehr_etfc_2024}, meaning that they cannot be employed in real-time applications and can only converge through iterations on the same simulation environment where tasks and their order remain static. This characteristic makes them particularly complex to deploy in real-world applications where dynamic adaptation is required.
 
-Transformer-based deep learning techniques remain poorly explored in this domain, despite being state-of-the-art in many fields. Some exploration efforts show promise; however, existing approaches often implement basic action spaces, such as TPTO~\cite{gholipour_tpto_2023}, which is designed with only two actions: offloading the task to the cloud or processing it on the edge.
+Transformer-based models remain poorly explored in this domain, despite being state-of-the-art in many fields. Some exploration efforts show promise. However, existing approaches often implement basic action spaces, such as TPTO~\cite{gholipour_tpto_2023}, which is designed with only two actions: offloading the task to the cloud or processing it on the edge, not taking into account the resources allocation.
 
 Algorithms are referenced in the Table~\ref{tab:task_offloading_methods} with the method, the dataset type, the QoS evaluated, and the job type. Used QoS are referenced in the Table~\ref{table:qos_metrics} with their description.
 
+
+%%%%%
 
 \begin{table*}[h!]
 \centering
@@ -242,12 +246,12 @@ This work & Metaheuristic & NPGA/NSGA-II+MLP & Real & C, L, TTR & IoT tasks & Cl
 ~\cite{bukhari_intelligent_2022} & AI & Logistic Regression (LR) & Real & C, E, L & IoT tasks & Cloud \& Fog & Python, Matlab \\ \hline
 ~\cite{suryadevara_energy_2021} & AI & Decision Tree (DT) & Synthetic & E, L & IoT tasks & Cloud \& Fog & iFogSim \\ \hline
 ~\cite{sarkar_deep_2022} & AI & Deep Neural Network (DNN) & Synthetic & C, E, L & Mobile & Cloud \& Fog & iFogSim \\ \hline
-~\cite{jiang_reinforcement_2021}& AI & Deep Q-Network (DQN) & Synthetic & E, L & Mobile & Cloud \& Fog & Python, Adam optimizer \\ \hline
+~\cite{jiang_reinforcement_2021}& AI & DRL & Synthetic & E, L & Mobile & Cloud \& Fog & Python, Adam optimizer \\ \hline
 ~\cite{ren_deep_2021} & AI & Multi-agent DRL & Synthetic & E & IoT tasks & Cloud \& Fog & NA \\ \hline
 ~\cite{tu_task_2022} & AI & DRL+LSTM & Real & C, L, TTR & Mobile & MEC & NA \\ \hline
 ~\cite{gholipour_tpto_2023} & AI & Transformers PPO & Synthetic & L & IoT tasks & Edge & Python, TensorFlow \\ \hline
 This work & AI & DQL+MLP & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
-This work & AI & Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
+This work & AI & DQL+Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
 \end{tabular}
 }
 \caption{Summary of Task Offloading Methods in Fog and Edge Computing}\label{tab:task_offloading_methods}
@@ -260,15 +264,15 @@ This work & AI & Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Py
 \begin{tabular}{ |c|l| }
 \hline
 \textbf{Metric} & \textbf{Description} \\ \hline
-C\@: Cost & Refers to the expenses incurred in task offloading, including computation, storage, and data transfer costs. \\ \hline
-L\@: Latency & The time delay between the initiation of a request and the reception of the response. Crucial for real-time applications. \\ \hline
-E\@: Energy & The total energy consumed during task offloading, including device and network-level energy usage. \\ \hline
-ET\@: Execution Time & The total time taken to execute a task from start to finish, including computation and communication time. \\ \hline
-D\@: Delay & The time difference between task submission and the start of its processing. Includes network and processing delays. \\ \hline
-M\@: Makespan & The total time required to complete all tasks in a batch or workflow. Indicates overall system efficiency. \\ \hline
-QWT\@: Queue Waiting Time & The duration a task spends waiting in the queue before being processed. Impacts response time and throughput. \\ \hline
-TTR\@: Task Throw Rate & The rate at which tasks are successfully processed and completed in the system, indicating system throughput. \\ \hline
-DLV\@: Dead Line Violation & The percentage or rate of tasks that succeed to complete within their specified deadlines, indicating system reliability and quality of service. \\ \hline
+C\@: Cost & The Cost refers to the expenses incurred in task offloading from computation to storage cost, passing by data the transfer costs. \\ \hline
+L\@: Latency is defined as the time delay between the initiation of a request and the reception of the response. This is a crucial consideration for real-time applications. \\ \hline
+E\@: Energy: The total energy consumed during task offloading, encompassing both device- and network-level energy utilisation. \\ \hline
+ET\@: Execution time is defined as the total time taken to complete a task from start to finish, including both computation and communication time. \\ \hline
+D\@: The temporal discrepancy between the submission of a task and its commencement, as well as the temporal lag inherent in processing operations. It should be noted that these results are subject to the effects of network and processing delays. \\ \hline
+M\@: The duration of time required for the completion of all tasks in a given batch or workflow is referred to as the `make-span`. This index is indicative of the overall efficiency of the system. \\ \hline
+QWT\@: The concept of `queue waiting time' refers to the duration for which a task remains in a waiting state within the queue prior to its processing. It has been demonstrated that impacts are associated with alterations to response time and throughput. \\ \hline
+TTR\@: The term `task throw rate' is defined as the rate at which tasks are successfully processed and completed within the system. This rate is a crucial metric for evaluating system throughput, providing a quantitative indication of the efficiency with which tasks are handled by the system. \\ \hline
+DLV\@: The term `deadline violation' is used to denote the percentage or rate of tasks that are not completed within the specified timeframe. This metric is indicative of the reliability of the system and the quality of the service provided. \\ \hline
 \end{tabular}
 }
 \caption{Explanation of QoS Metrics in Edge-Fog-Cloud Computing}\label{table:qos_metrics}
@@ -282,7 +286,7 @@ DLV\@: Dead Line Violation & The percentage or rate of tasks that succeed to com
 This scenario is modeled according to foundational concepts presented in\cite{aazam_cloud_2022, bukhari_intelligent_2022, jazayeri_autonomous_2021}, following a three-tier offloading approach that involves \textit{edge}, \textit{fog}, and \textit{cloud} nodes. In Figure~\ref{fig:cloud-architecture}, a high-level cloud-enabled architecture is shown, where a Global Gateway (GG) collects tasks from various IoT devices before determining whether to process them locally or offload them to fog or cloud resources.
 
 
-A real-world dataset of IoT-generated tasks, is employed to study and evaluate these offloading decisions. The tasks in this dataset vary in size, deadline constraints, and computational complexity, thereby reflecting the heterogeneous nature of practical IoT workloads.
+The study employs a real-world dataset of IoT-generated tasks to evaluate the performance of the proposed offloading strategies in the purpose of real applications. The dataset encompasses various tasks collected from IoT devices. Each task is characterized by attributes such as size (in bytes), required CPU cycles, and deadline constraints. This dataset provides a realistic basis for assessing the effectiveness of offloading strategies in handling diverse and dynamic workloads typical of IoT environments.
 
 \begin{figure}[ht]
     \centering
@@ -301,10 +305,9 @@ The GG layer is located at the edge and aggregates tasks from local IoT devices.
 
 Upon receiving a task, several factors are evaluated:
 \begin{itemize}
-    \item Node state: The current load on the GG, along with the availability of fog and cloud nodes.
-    \item Network conditions: Bandwidth, potential congestion, and latency to fog or cloud nodes.
-    \item Energy usage: A predictive assessment of energy costs if the task is executed locally versus offloaded.
-    \item Task requirements: Size, computational complexity, and deadline or QoS constraints.
+    \item Node state: The current load on each node, including CPU usage, memory availability, and buffer status.
+    \item Network conditions: Bandwidth and potential congestion from the GG to fog or cloud nodes.
+    \item Task requirements, only for T-NOTE\: Size, computational complexity, and deadline or QoS constraints.
 \end{itemize}
 
 A subsequent decision is made to determine the optimal execution strategy for the task. The system evaluates three primary options: processing the task locally if it is computationally feasible and resource-efficient, offloading the task to a nearby Fog Node to leverage edge computing capabilities, or offloading the task directly to a Cloud Node for intensive computational requirements that exceed local and fog node capacities.
@@ -789,7 +792,8 @@ c1 & Cloud & 7 & 500 & 51 & 3 & 3 & 250 & 1000 & Belgium \\ \hline
 \end{table*}
 
 
-\subsection{Hyperparameters}
+\subsection{Hyperparameters}\label{subsec:hyperparameters}
+
 
 Since our modeling framework assigns zero latency and energy values to tasks that fail to be successfully offloaded, the primary optimization objective becomes the minimization of the \emph{task rejection rate}. This constraint is essential to prevent model degeneration, where the system could exploit the null assignment by deliberately rejecting tasks to artificially improve energy and latency performance metrics.
 
@@ -808,7 +812,7 @@ Finally, to improve clarity and maintain consistency across training and evaluat
 
 \subsubsection{Model Configurations}
 
-The complete hyperparameter specifications are detailed in Table~\ref{tab:model_specifications}. The MLP architectural parameters remain consistent across both Genetic Algorithm (GA)-based approaches and DQL implementations to ensure comparative validity.
+The complete hyperparameter specifications are detailed in Table~\ref{tab:model_specifications}. These specifications guide the architecture and training of both the MLP and Transformer models under the DQL algorithm.
 
 
 \begin{table}[H]
@@ -846,24 +850,20 @@ Greedy methods assign tasks based on immediate resource availability or specific
 
 \subsection{Evaluation}
 
-Table~\ref{tab:results_comparison} presents a detailed comparison of eight distinct offloading strategies, ranging from simple heuristic approaches to sophisticated machine learning-based methods. The results reveal significant performance variations across different algorithmic approaches.
+
+From the heuristic baselines evaluation, a classification of the offloading strategies into two categories is observed: (i) Energy centric: \emph{Random} and \emph{Round Robin} exhibit high task failure rates and latency favoring energy efficiency; (ii) Performance centric: \emph{Greedy} significantly reduces task failures and latency while increasing energy consumption.
+
+\subsubsection{Comparison of Offloading Strategies Performance Centric}\label{subsec:comparison_of_offloading_strategies}
+
+Such as the purpose of this paper is primarily to minimize task failures and secondarily to optimize latency, the performance of the Greedy method is taken as the baseline and the reward weights are set to \([1, 0.1, 0.05]\) to prioritize task rejection rate (TTR), followed by latency and energy consumption as discuss in~\ref{sec:reward_weights}.
+
+Table~\ref{tab:results_comparison} presents a detailed comparison of eight distinct offloading strategies of the categorie (i). 
 
 \begin{table*}[htbp]
 \centering
 
 \begin{tabular}{lccc}
 \textbf{Offloading Strategies} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
-\hline
-Random 
- & 14.21
- & 20.89 
- & 238.3 \\
- 
-Round Robin 
- & 14.98
- & 18.36
- & 239.9 \\
-\hline
 \hline
  
 Greedy 
@@ -895,9 +895,125 @@ Best results are in \textbf{bold}.}
 \label{tab:results_comparison}
 \end{table*}
 
-Random and Round Robin exhibit high Task Throw Rates (TTR) exceeding 14\% and latency over 18 seconds. This is due to their simplistic task assignment mechanisms, which do not account for the varying resource capacities of nodes but rather distribute tasks evenly, favoring energy efficiency as more fog nodes are utilized~\ref{subsec:random}. In contrast, the Greedy approach significantly reduces TTR to 0.1889\% and latency to 4.3936 seconds by prioritizing nodes with the highest available CPU resources~\ref{subsec:greedy-baseline}. However, this comes at the cost of increased energy consumption (338.6652 W) due to the overutilization of high-capacity nodes. Since this paper focuses primarily on minimizing TTR, the Greedy method's performance is taken as the baseline.
 
 The DQL-based approaches demonstrate substantial improvements over the Greedy baseline, with progressively refined architectures yielding incrementally better performance. The MLP strategy achieves a TTR of 0.1111\%, representing a 41.2\% reduction compared to Greedy, while simultaneously reducing latency to 4.3315 seconds (a 1.4\% improvement). However, this comes at the expense of higher energy consumption (348.9158 W, 3.0\% increase over Greedy), suggesting that the MLP's learned offloading policy favors reliability and speed over energy efficiency. The transformer-based NOTE architecture further advances performance by eliminating task failures entirely (0.0000\% TTR) and reducing latency to 4.1504 seconds (5.5\% improvement over Greedy), while maintaining comparable energy consumption (337.5961 W). This improvement stems from the transformer encoder's ability to capture complex relationships between node observations through self-attention mechanisms. Building upon this foundation, T-NOTE extends the architecture by incorporating task-level observations alongside node characteristics, enabling the model to make more contextually aware offloading decisions. This extension yields the best overall performance across all metrics: maintaining zero task failures while achieving the lowest latency (3.6626 seconds, 16.6\% improvement over Greedy) and the most efficient energy consumption (317.0230 W, 6.4\% reduction compared to Greedy), demonstrating that task-aware attention mechanisms enable superior resource allocation strategies.
+
+\subsubsection{Energy Consideration}\label{sec:energy_consideration}
+
+To highlight the performance of the proposed DRL-based approaches with respect to energy consumption, we compare T-NOTE, our best model, with the heuristic baselines, Random and Round Robin, as shown in Table~\ref{tab:energy_comparison}. By appropriately adjusting the reward weights to prioritize energy efficiency, 
+\begin{table*}[htbp]
+\centering
+
+\begin{tabular}{lccc}
+\textbf{Offloading Strategies} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
+\hline
+Random 
+ & 14.21
+ & 20.89
+ & 238.3 \\
+ 
+Round Robin 
+ & 14.98
+ & 18.36
+ & 239.9 \\
+ 
+T-NOTE 
+ & \textbf{0.3556} 
+ & \textbf{5.976} 
+ & \textbf{238.0} \\
+
+\end{tabular}
+
+\caption{Performance comparison of T-NOTE with energy-optimized reward weights against heuristic baselines on Pakistan test set. Best results are in \textbf{bold}.}
+\label{tab:energy_comparison}
+\end{table*}
+
+
+Random and Round Robin exhibit high Task Throw Rates (TTR) exceeding 14\% and latency over 18 seconds. This is due to their simplistic task assignment mechanisms, which do not account for the varying resource capacities of nodes but rather distribute tasks evenly, favoring energy efficiency as more fog nodes are utilized~\ref{subsec:random}. In contrast, the Greedy approach significantly reduces TTR to 0.1889\% and latency to 4.3936 seconds by prioritizing nodes with the highest available CPU resources~\ref{subsec:greedy-baseline}. However, this comes at the cost of increased energy consumption (338.6652 W) due to the overutilization of high-capacity nodes. Since this paper focuses primarily on minimizing TTR, the Greedy method's performance is taken as the baseline.
+
+T-NOTE with energy-optimized reward weights achieves 40 times lower TTR and 3.5 times lower latency than the heuristic baselines, while maintaining comparable energy consumption. This demonstrates that T-NOTE can be adapted to different optimization objectives through reward weight tuning, highlighting the effectiveness and flexibility of the proposed DRL-based approach in optimizing task offloading across hierarchical edge-fog-cloud environments.
+
+
+\subsection{Evaluation}
+
+The evaluation of heuristic baseline methods reveals a fundamental trade-off between energy efficiency and performance, allowing us to categorize offloading strategies into two distinct classes: (i) \emph{energy-centric} strategies (\emph{Random} and \emph{Round Robin}), which prioritize energy efficiency at the cost of elevated task failure rates and increased latency; and (ii) \emph{performance-centric} strategies (\emph{Greedy}), which substantially reduce task failures and latency while consuming more energy.
+
+\subsubsection{Performance-Centric Offloading Strategies}\label{subsec:comparison_of_offloading_strategies}
+
+Given that the primary objective of this work is to minimize task failures, with latency optimization as a secondary goal, we adopt the Greedy method as our performance baseline. Accordingly, reward weights are configured as $[1, 0.1, 0.05]$ to prioritize task throw rate (TTR), followed by latency and energy consumption, as detailed in Section~\ref{sec:reward_weights}.
+
+Table~\ref{tab:results_comparison} presents a comprehensive comparison of performance-centric offloading strategies evaluated on the Pakistan test set. 
+
+\begin{table*}[htbp]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Offloading Strategy} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
+\midrule
+Greedy 
+ & 0.1889
+ & 4.394
+ & 338.7 \\
+\midrule
+MLP 
+ & 0.1111
+ & 4.332
+ & 349.0 \\
+NOTE 
+ & \textbf{0.0000} 
+ & 4.150
+ & 337.6 \\
+T-NOTE 
+ & \textbf{0.0000} 
+ & \textbf{3.663} 
+ & \textbf{317.0} \\
+\bottomrule
+\end{tabular}
+\caption{Performance comparison of offloading strategies measured by Task Throw Rate (TTR), latency ($L$), and energy consumption ($E$) on the Pakistan test set. Best results are shown in \textbf{bold}.}
+\label{tab:results_comparison}
+\end{table*}
+
+The Deep Q-Learning (DQL)-based approaches demonstrate substantial improvements over the Greedy baseline, with progressively refined architectures yielding incremental performance gains. The MLP strategy achieves a TTR of 0.1111\%, representing a 41.2\% reduction compared to Greedy, while concurrently reducing latency to 4.332 seconds (1.4\% improvement). However, this improvement incurs a 3.0\% increase in energy consumption (349.0~W versus 338.7~W), suggesting that the MLP's learned policy prioritizes reliability and responsiveness over energy efficiency.
+
+The transformer-based NOTE architecture advances performance further by eliminating task failures entirely (0.0000\% TTR) and reducing latency to 4.150 seconds (5.5\% improvement over Greedy), while maintaining comparable energy consumption (337.6~W). This enhancement can be attributed to the transformer encoder's capacity to capture complex interdependencies among node observations through self-attention mechanisms.
+
+By incorporating task-level observations alongside node characteristics, the T-NOTE architecture enables more contextually informed offloading decisions. This extension achieves superior performance across all metrics: maintaining zero task failures while attaining the lowest latency (3.663~seconds, representing a 16.6\% improvement over Greedy) and the most efficient energy consumption (317.0~W, a 6.4\% reduction compared to Greedy). These results demonstrate that task-aware attention mechanisms facilitate more effective resource allocation strategies in hierarchical edge-fog-cloud environments.
+
+\subsubsection{Energy-Optimized Performance}\label{sec:energy_consideration}
+
+To evaluate the flexibility of the proposed DRL-based approach with respect to energy optimization, we compare T-NOTE against energy-centric heuristic baselines (Random and Round Robin) under appropriately adjusted reward weights that prioritize energy efficiency. Table~\ref{tab:energy_comparison} presents these results.
+
+\begin{table*}[htbp]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Offloading Strategy} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
+\midrule
+Random 
+ & 14.21
+ & 20.89
+ & 238.3 \\
+Round Robin 
+ & 14.98
+ & 18.36
+ & 239.9 \\
+\midrule
+T-NOTE (energy-optimized)
+ & \textbf{0.3556} 
+ & \textbf{5.976} 
+ & \textbf{238.0} \\
+\bottomrule
+\end{tabular}
+\caption{Performance comparison of T-NOTE with energy-optimized reward weights against heuristic baselines on the Pakistan test set. Best results are shown in \textbf{bold}.}
+\label{tab:energy_comparison}
+\end{table*}
+
+The heuristic baselines exhibit TTRs exceeding 14\% and latencies above 18 seconds. These poor performance characteristics stem from their simplistic task assignment mechanisms, which distribute tasks uniformly without consideration of node resource capacities. While this approach achieves low energy consumption (approximately 239~W) by utilizing a larger number of fog nodes~\cite{subsec:random}, it fundamentally fails to meet performance requirements.
+
+In contrast, the Greedy approach achieves a TTR of 0.1889\% and latency of 4.394 seconds by preferentially selecting nodes with the highest available CPU resources~\cite{subsec:greedy-baseline}. However, this strategy results in elevated energy consumption (338.7~W) due to the concentration of tasks on high-capacity nodes.
+
+When configured with energy-optimized reward weights, T-NOTE achieves a TTR approximately 40 times lower and latency approximately 3.5 times lower than the heuristic baselines, while maintaining comparable energy consumption (238.0~W). This result demonstrates that T-NOTE can be effectively adapted to diverse optimization objectives through reward weight configuration, highlighting both the effectiveness and flexibility of the proposed DRL-based approach for task offloading in hierarchical edge-fog-cloud environments.
+
 
 
 \subsection{MLP-Based DQL}\label{subsec:mlp_perf}
@@ -1102,36 +1218,6 @@ The energy consumption and CPU utilization patterns shown in Figures~\ref{fig:T-
 
 The T-NOTE's adaptive decision-making capability enables it to recognize scenarios where distributed processing across multiple node types provides superior outcomes compared to pure cloud-centric strategies. This flexibility becomes particularly valuable under varying network conditions and diverse task requirements, demonstrating the architecture's potential for real-world deployment scenarios where computational demands and network characteristics exhibit significant temporal and spatial variation.
 
-\subsection{Energy Consideration}\label{sec:energy_consideration}
-
-To highlight the performance of the proposed DRL-based approaches with respect to energy consumption, we compare T-NOTE, our best model, with the heuristic baselines, Random and Round Robin, as shown in Table~\ref{tab:energy_comparison}. By appropriately adjusting the reward weights to prioritize energy efficiency, T-NOTE achieves 40 times lower TTR and 3.5 times lower latency than the heuristic baselines, while maintaining comparable energy consumption. This demonstrates that T-NOTE can be adapted to different optimization objectives through reward weight tuning, highlighting the effectiveness and flexibility of the proposed DRL-based approach in optimizing task offloading across hierarchical edge-fog-cloud environments.
-
-\begin{table*}[htbp]
-\centering
-
-\begin{tabular}{lccc}
-\textbf{Offloading Strategies} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
-\hline
-Random 
- & 14.21
- & 20.89
- & 238.3 \\
- 
-Round Robin 
- & 14.98
- & 18.36
- & 239.9 \\
- 
-T-NOTE 
- & \textbf{0.3556} 
- & \textbf{5.976} 
- & \textbf{238.0} \\
-
-\end{tabular}
-
-\caption{Performance comparison of T-NOTE with energy-optimized reward weights against heuristic baselines on Pakistan test set. Best results are in \textbf{bold}.}
-\label{tab:energy_comparison}
-\end{table*}
 
 
 
