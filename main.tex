@@ -252,8 +252,8 @@ This work & Metaheuristic & NPGA/NSGA-II+MLP & Real & C, L, TTR & IoT tasks & Cl
 ~\cite{ren_deep_2021} & AI & Multi-agent DRL & Synthetic & E & IoT tasks & Cloud \& Fog & NA \\ \hline
 ~\cite{tu_task_2022} & AI & DRL+LSTM & Real & C, L, TTR & Mobile & MEC & NA \\ \hline
 ~\cite{gholipour_tpto_2023} & AI & Transformers PPO & Synthetic & L & IoT tasks & Edge & Python, TensorFlow \\ \hline
-This work & AI & DQL+MLP & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
-This work & AI & DQL+Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
+This work & AI & DQL+MLP/Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog & Python, PyTorch \\ \hline
+
 \end{tabular}
 }
 \caption{Summary of Task Offloading Methods in Fog and Edge Computing}\label{tab:task_offloading_methods}
@@ -266,15 +266,15 @@ This work & AI & DQL+Transformers & Real & C, L, TTR & IoT tasks & Cloud \& Fog 
 \begin{tabular}{ |c|l| }
 \hline
 \textbf{Metric} & \textbf{Description} \\ \hline
-C\@: Cost & The Cost refers to the expenses incurred in task offloading from computation to storage cost, passing by data the transfer costs. \\ \hline
-L\@: Latency is defined as the time delay between the initiation of a request and the reception of the response. This is a crucial consideration for real-time applications. \\ \hline
-E\@: Energy: The total energy consumed during task offloading, encompassing both device- and network-level energy utilisation. \\ \hline
-ET\@: Execution time is defined as the total time taken to complete a task from start to finish, including both computation and communication time. \\ \hline
-D\@: The temporal discrepancy between the submission of a task and its commencement, as well as the temporal lag inherent in processing operations. It should be noted that these results are subject to the effects of network and processing delays. \\ \hline
-M\@: The duration of time required for the completion of all tasks in a given batch or workflow is referred to as the `make-span`. This index is indicative of the overall efficiency of the system. \\ \hline
-QWT\@: The concept of `queue waiting time' refers to the duration for which a task remains in a waiting state within the queue prior to its processing. It has been demonstrated that impacts are associated with alterations to response time and throughput. \\ \hline
-TTR\@: The term `task throw rate' is defined as the rate at which tasks are successfully processed and completed within the system. This rate is a crucial metric for evaluating system throughput, providing a quantitative indication of the efficiency with which tasks are handled by the system. \\ \hline
-DLV\@: The term `deadline violation' is used to denote the percentage or rate of tasks that are not completed within the specified timeframe. This metric is indicative of the reliability of the system and the quality of the service provided. \\ \hline
+C\: Cost & Refers to the expenses incurred in task offloading from computation to storage cost, passing by data the transfer costs. \\ \hline
+L\: Latency & Latency is defined as the time delay between the initiation of a request and the reception of the response. This is a crucial consideration for real-time applications. \\ \hline
+E\: Energy & The total energy consumed during task offloading, encompassing both device- and network-level energy utilisation. \\ \hline
+ET\: Execution time & is defined as the total time taken to complete a task from start to finish, including both computation and communication time. \\ \hline
+D\: Temporal discrepancy & The temporal discrepancy between the submission of a task and its commencement, as well as the temporal lag inherent in processing operations. It should be noted that these results are subject to the effects of network and processing delays. \\ \hline
+M\: Make-span & The duration of time required for the completion of all tasks in a given batch or workflow. This index is indicative of the overall efficiency of the system. \\ \hline
+QWT\: Queue waiting time & Refers to the duration for which a task remains in a waiting state within the queue prior to its processing. It has been demonstrated that impacts are associated with alterations to response time and throughput. \\ \hline
+TTR\: Task throw rate & Defined as the rate at which tasks are successfully processed and completed within the system. This rate is a crucial metric for evaluating system throughput, providing a quantitative indication of the efficiency with which tasks are handled by the system. \\ \hline
+DLV\: Deadline violation & Denote the percentage or rate of tasks that are not completed within the specified timeframe. This metric is indicative of the reliability of the system and the quality of the service provided. \\ \hline
 \end{tabular}
 }
 \caption{Explanation of QoS Metrics in Edge-Fog-Cloud Computing}\label{table:qos_metrics}
@@ -285,7 +285,7 @@ DLV\@: The term `deadline violation' is used to denote the percentage or rate of
 
 \subsection{Scenario Modeling}\label{sec:scenario_modeling}
 
-This scenario is modeled according to foundational concepts presented in\cite{aazam_cloud_2022, bukhari_intelligent_2022, jazayeri_autonomous_2021}, following a three-tier offloading approach that involves \textit{edge}, \textit{fog}, and \textit{cloud} nodes. In Figure~\ref{fig:cloud-architecture}, a high-level cloud-enabled architecture is shown, where a Global Gateway (GG) collects tasks from various IoT devices before determining whether to process them locally or offload them to fog or cloud resources.
+This scenario is modeled according to foundational concepts presented in~\cite{aazam_cloud_2022, bukhari_intelligent_2022, jazayeri_autonomous_2021}, following a three-tier offloading approach that involves \textit{edge}, \textit{fog}, and \textit{cloud} nodes. In Figure~\ref{fig:cloud-architecture}, a high-level cloud-enabled architecture is shown, where a Global Gateway (GG) collects tasks from various IoT devices before determining whether to process them locally or offload them to fog or cloud resources.
 
 
 The study employs a real-world dataset of IoT-generated tasks to evaluate the performance of the proposed offloading strategies in the purpose of real applications. The dataset encompasses various tasks collected from IoT devices. Each task is characterized by attributes such as size (in bytes), required CPU cycles, and deadline constraints. This dataset provides a realistic basis for assessing the effectiveness of offloading strategies in handling diverse and dynamic workloads typical of IoT environments.
@@ -299,29 +299,31 @@ The study employs a real-world dataset of IoT-generated tasks to evaluate the pe
 
 \subsubsection{Architecture}\label{subsec:architecture}
 
-In Figure~\ref{fig:cloud-architecture}, a schematic overview of the proposed three-tier architecture is illustrated. The system is composed of IoT devices (sensors, mobile nodes, and other edge devices) that generate tasks. These tasks subsequently reach the Global Gateway, which processes them locally if resources are available, or decides to offload them to the fog or the cloud based on resource availability and energy considerations.
+Figure~\ref{fig:cloud-architecture} presents a schematic overview of the proposed three-tier architecture. The system comprises IoT devices (sensors, mobile nodes, and other edge devices) that generate tasks. These tasks subsequently reach the Global Gateway (GG), which processes them locally if resources are available or offloads them to the fog or cloud layers based on resource availability and energy considerations.
 
 \paragraph{Global Gateway}\label{subsubsec:GG}
 
-The GG layer is located at the edge and aggregates tasks from local IoT devices. In addition to routing capabilities, the GG has limited computational power, enabling it to handle smaller tasks locally and thus reduce network traffic. This approach is particularly advantageous for time-sensitive tasks that can be processed quickly on-site.
+The GG layer is located at the edge and aggregates tasks from local IoT devices. In addition to routing capabilities, the GG possesses limited computational power, enabling it to handle smaller tasks locally and thus reduce network traffic. This approach is particularly advantageous for time-sensitive tasks that can be processed quickly on-site.
 
 Upon receiving a task, several factors are evaluated:
 \begin{itemize}
-    \item Node state: The current load on each node, including CPU usage, memory availability, and buffer status.
-    \item Network conditions: Bandwidth and potential congestion from the GG to fog or cloud nodes.
-    \item Task requirements, only for T-NOTE\: Size, computational complexity, and deadline or QoS constraints.
+    \item \textbf{Node state:} The current load on each node, including CPU usage, memory availability, and buffer status.
+    \item \textbf{Network conditions:} Bandwidth and potential congestion from the GG to fog or cloud nodes.
+    \item \textbf{Task requirements} (T-NOTE only)\textbf{:} Task size, computational complexity, and deadline or quality of service (QoS) constraints.
 \end{itemize}
 
-A subsequent decision is made to determine the optimal execution strategy for the task. The system evaluates three primary options: processing the task locally if it is computationally feasible and resource-efficient, offloading the task to a nearby Fog Node to leverage edge computing capabilities, or offloading the task directly to a Cloud Node for intensive computational requirements that exceed local and fog node capacities.
+Based on these factors, an offloading decision is made to determine the optimal execution strategy for the task. The GG decides whether the task should be processed locally, offloaded to a fog node, or offloaded to a cloud node. Since the three-tier architecture includes multiple fog and cloud nodes, the decision also specifies the particular node to which the task should be sent. This decision-making process is dynamic and adaptive, responding to the current state of the network, available nodes and the task attributes.
+
 
 
 \paragraph{Fog Nodes}\label{subsubsec:Fog}
-Fog nodes provide moderate computational resources that exceed those of edge devices but remain below the capacity of cloud data centers. These intermediate computing nodes offer lower latency than distant cloud nodes due to their closer physical proximity to the network edge. Fog nodes serve as an essential intermediate tier for tasks that cannot be processed locally at the Gateway (GG) yet do not require the extensive resources of the cloud infrastructure. This positioning makes them ideal for applications requiring balanced performance between computational capability and response time.
+
+Fog nodes provide moderate computational resources that exceed those of edge devices but remain below the capacity of cloud data centres. These intermediate computing nodes offer reduced latency in comparison to distant cloud nodes, due to their closer physical proximity to the network edge. Fog nodes function as a pivotal intermediate tier for tasks that, whilst not requiring the extensive resources of the cloud infrastructure, cannot be processed locally at the GG. This configuration renders them optimal for applications necessitating balanced performance between computational capability and response time.
 
 \paragraph{Cloud Nodes}\label{subsubsec:Cloud}
 Cloud nodes represent large-scale data centers with substantial computational and storage capabilities. Although they typically have higher baseline latencies because of greater network distances, they are well suited for computationally intensive applications. Cloud nodes excel in handling large tasks that demand significant CPU and memory resources, making them optimal for complex analytical workloads. They are particularly effective for batch processing scenarios with relaxed real-time constraints, where throughput is prioritized over immediate response. Furthermore, cloud data centers can accommodate high concurrency situations through dynamic resource scaling, allowing them to adapt to varying computational demands efficiently.
 
-CPU capacity: Cloud servers can support a high volume of CPU cycles, facilitating efficient offloading for tasks with elevated computational demands.
+% CPU capacity: Cloud servers can support a high volume of CPU cycles, facilitating efficient offloading for tasks with elevated computational demands.
 
 \subsection{QoS Modeling}\label{sec:qos_modeling}
 
@@ -329,7 +331,7 @@ Task offloading decisions are evaluated within the RayCloudSim framework develop
 
 \subsubsection{Task Throw Rate}\label{subsubsec:task_throw_rate}
 
-In distributed environments, task execution failures can occur due to issues such as \emph{network disconnections}, \emph{node isolation}, or \emph{buffer overflows}.
+In this modelisation, task execution failures can occur due to issues such as \emph{network disconnections}, \emph{node isolation}, or \emph{buffer overflows}.
 
 The \emph{task throw rate} \(\tau\) is defined as:
 \begin{equation}
@@ -401,10 +403,10 @@ E_{\text{total}} =
     \bigl(E_{\text{exe}}^{i,k} + E_{\text{trans}}^{i,k}\bigr) \Bigr)
 \end{equation}
 
-This formulation ensures that energy consumption measurements reflect only the computational and communication activities associated with successful task offloading, maintaining consistency with the latency metric definition and providing a meaningful performance evaluation.
+This formulation is intended to ensure that energy consumption measurements reflect only the computational and communication activities associated with successful task offloading. In this way, consistency with the latency metric definition is maintained, and a meaningful performance evaluation is provided.
 
 \paragraph{Node Power Consumption Model}
-Based on the work of~\cite{ismail_computing_2021}, the power consumption of a computing node can be approximated by:
+Based on the work of~, the power consumption of a computing node can be approximated by:
 \begin{equation}
 P(u_{\text{cpu}}) = \alpha + \beta \cdot u_{\text{cpu}},
 \end{equation}
@@ -415,7 +417,7 @@ where:
     \item \(u_{\text{cpu}} \in [0,1]\) is the CPU utilization ratio.
 \end{itemize}
 
-This model has a Standard Error of Estimation (SEE) of 12.9\%, indicating a reasonably accurate fit to empirical data. 
+\cite{ismail_computing_2021} reported a Standard Error of Estimation (SEE) of 12.9\% with this model, indicating a reasonably accurate fit to empirical data.
 
 \paragraph{Idle Energy}
 The idle energy for node \(i\) over the entire simulation duration \(T\) can be calculated as:
@@ -446,7 +448,7 @@ where:
     \item \(I^{j,i}\) is the set of links used along the path from node \(j\) to node \(i\).
 \end{itemize}
 
-This model offers a structured, interpretable framework for quantifying energy consumption in offloading scenarios, thereby facilitating meaningful comparisons of energy efficiency under different scheduling and resource-allocation strategies.
+This model provide a structured, interpretable framework for quantifying energy consumption in offloading scenarios, thereby facilitating meaningful comparisons of energy efficiency under different scheduling and resource-allocation strategies.
 
 
 \section{Proposed Offloading Strategies}\label{sec:offloading_strategies}
@@ -509,7 +511,8 @@ The genetic algorithm process begins with population initialization, where an in
 
 \paragraph{Multi-objective GA} As the GA algorithm is based on multiple individuals, it can achieve multiple objectives. During the selection process, the selected individuals were able to select multiple scores, rather than a single score, thereby creating the Pareto front. The present study focuses on two scalable and robust approaches. 
 
-\emph{NPGA}~\citep{horn1994npga} employs a combination of tournament selection and a niching mechanism to maintain population diversity and prevent premature convergence to a single region of the Pareto front. The selection process works by conducting tournaments between randomly selected candidate solutions, where the winner is determined based on Pareto dominance relationships within a randomly chosen comparison set. Specifically, two candidates compete by counting how many individuals they dominate from a subset of the population, and the candidate with higher dominance count is selected. This approach naturally maintains diversity by distributing selection pressure across different regions of the Pareto front without requiring explicit front classification.
+As stated by~\citep{horn1994npga}, the \emph{NPGA} employs a combination of tournament selection and a niching mechanism. This combination is used to maintain population diversity and to prevent premature convergence to a single region of the Pareto front. The selection process is initiated by the execution of tournaments between candidate solutions selected at random. The winner of these tournaments is determined based on Pareto dominance relationships within a comparison set that is also randomly chosen. Specifically, the competition is between two candidates who are tasked with counting how many individuals they dominate from a given subset of the population. The candidate with the higher dominance count is selected as the winner. This approach is predicated on the maintenance of diversity through the distribution of selection pressure across disparate regions of the Pareto front, thus obviating the necessity for explicit front classification.
+
 
 In contrast, \emph{NSGA-II}~\citep{Deb2002AFA} uses non-dominated sorting to classify solutions into hierarchical fronts and employs crowding distance calculations to preserve solution diversity within each front and guide selection for the next generation. The selection mechanism first performs non-dominated sorting to organize the population into ranked fronts ($\mathcal{F}_1, \mathcal{F}_2, \ldots$), where $\mathcal{F}_1$ contains the best non-dominated solutions. Within each front, crowding distance is calculated to measure the density of solutions in the objective space, favoring individuals in less crowded regions. Selection prioritizes individuals from better fronts first, and within the same front, those with larger crowding distances are preferred to maintain diversity along the Pareto front.
 
@@ -566,13 +569,14 @@ The DQL workflow, as detailed in Algorithm~\ref{alg:DQL_iot_offloading}, begins 
 & \text{otherwise}.
 \end{cases}
 \]
-Here, \(\lambda_0\) (often negative/zero) penalizes failure, \(L_{\text{task}}, E_{\text{task}}\) are normalized by epoch maxima, and \(\lambda_1, \lambda_2\) tune the importance of latency and energy, respectively. Finally, after a certain number of tasks, transitions are sampled from the replay buffer for training updates, where the Q-learning target is computed as \(Q_{\text{target}} = r \;+\; (1 - \mathbf{1}_{\text{done}})\,\gamma\, \max_{a'} Q(s',a')\), and the network is trained using methods such as MSE loss to align predicted Q-values with \(Q_{\text{target}}\), with Q-value estimates converging over multiple epochs.
+Here, \(\lambda_0\) penalizes failure, \(L_{\text{task}}, E_{\text{task}}\) are normalized by epoch maxima, and \(\lambda_1, \lambda_2\) tune the importance of latency and energy, respectively. Finally, after a certain number of tasks, transitions are sampled from the replay buffer for training updates, where the Q-learning target is computed as \(Q_{\text{target}} = r \;+\; (1 - \mathbf{1}_{\text{done}})\,\gamma\, \max_{a'} Q(s',a')\), and the network is trained using methods such as MSE loss to align predicted Q-values with \(Q_{\text{target}}\), with Q-value estimates converging over multiple epochs.
 
 \paragraph{Key Observations}
 Several key observations emerge from the DQL approach. Failure penalties implemented through a negative \(\lambda_{0}\) can strongly discourage decisions that often cause task failures, providing a direct mechanism to avoid poor offloading choices. Metric normalization achieved by dividing latency and energy by epoch-wide maxima ensures bounded values for stable learning, preventing any single metric from dominating the reward signal. Metric emphasis can be adjusted by tuning \(\lambda_{1,2}\) to shift the balance between minimizing latency and saving energy, allowing the system to be configured for different optimization priorities. Finally, architectural flexibility is maintained since although an MLP is standard, more sophisticated models such as Transformers can replace or extend the MLP while retaining the same DQL pipeline.
 
 \subsubsection{MLP-Based DQL}\label{subsubsec:mlp_DQL}
-MLP-based DQL mirrors the MLP structure used in genetic algorithms, but instead of evolving weights, it trains them via Q-learning. The architecture consists of a feed-forward MLP that processes the current system state including CPU, buffer, bandwidth, and other relevant metrics, and outputs Q-values per node to guide the offloading decision. The policy employs an \(\varepsilon\)-greedy strategy that balances exploration and exploitation, ensuring the agent can discover new promising strategies while leveraging learned knowledge. The reward definition encodes latency, energy, and failures into a comprehensive reward function that captures the multi-objective nature of the offloading problem. Batch updates are performed by sampling from a replay buffer, which helps stabilize training and reduce correlation among transitions, leading to more robust learning dynamics.
+
+The MLP-based DQL reflects the MLP structure utilised in genetic algorithms. However, rather than undergoing weight evolution, it employs Q-learning to train the weights. The architecture comprises a feed-forward MLP that processes the current system state. This state includes metrics such as CPU, buffer, and bandwidth. The MLP outputs Q-values per node in order to guide the offloading decision. The task attributes (size, deadline, cycles/bit, and transmission bit rate) are also incorporated into the input features for a variant of MLP named T-MLP. The policy employs an \(\varepsilon\)-greedy strategy that balances exploration and exploitation, ensuring the agent can discover new promising strategies while leveraging learned knowledge. The reward definition encodes latency, energy, and failures into a comprehensive reward function that captures the multi-objective nature of the offloading problem. The process of batch updates is facilitated by the utilisation of a replay buffer, which serves to stabilise the training process and diminish the correlation among transitions. This, in turn, engenders more robust learning dynamics.
 
 
 \subsubsection{Transformer-based DQL}\label{subsubsec:transformers}
@@ -636,9 +640,9 @@ T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and 
         \STATE{Observe next state $s_{i+1}$ and compute reward:}
         \STATE{
         \[
-        r_i = \begin{cases}
+        r_i = -\begin{cases}
         \lambda_0 & \text{if task execution fails} \\[0.5em]
-        -\lambda_1 \cdot \frac{L_i}{L_{\max}^{(e)}} - \lambda_2 \cdot \frac{E_i}{E_{\max}^{(e)}} & \text{otherwise}
+        \lambda_1 \cdot \frac{L_i}{L_{\max}^{(e)}} + \lambda_2 \cdot \frac{E_i}{E_{\max}^{(e)}} & \text{otherwise}
         \end{cases}
         \]
         }
@@ -670,7 +674,7 @@ For an MLP with $L$ hidden layers, where $d_l$ denotes the number of neurons in 
 \[
 C = \mathcal{O}\!\left( \sum_{l=1}^{L+1} d_l \cdot d_{l-1} \right).
 \]
-DQL, a reinforcement learning method, involves sequential interactions with an environment, where the model learns to maximize cumulative rewards through trial-and-error. This requires $E$ episodes, each with $T$ time steps, during which the network performs forward passes to select actions, receives rewards, and updates via backpropagation (often using experience replay and target networks for stability). The overall training complexity is thus approximated as
+DQL involves sequential interactions with an environment, where the model learns to maximize cumulative rewards through trial-and-error. This requires $E$ episodes, each with $T$ time steps, during which the network performs forward passes to select actions, receives rewards, and updates via backpropagation (often using experience replay and target networks for stability). The overall training complexity is thus approximated as
 \[
 \mathcal{O}(E \cdot T \cdot C).
 \]
@@ -717,7 +721,8 @@ The DQL algorithms (both MLP-based and Transformer-based) were trained on a work
 This configuration provided sufficient computational power to accelerate neural network training on large batches.  
 
 \paragraph{GA Experiments.}  
-The GA-based methods (NPGA, NSGA-II) were executed on a high-performance server with:
+The GA-based methods (NPGA, NSGA-II) were trained on a high CPU machine:
+
 \begin{itemize}
     \item CPU\: 192 cores
     \item RAM\: 256 GB
@@ -769,7 +774,7 @@ In Figure~\ref{fig:used_architecture}, a network is shown to consist of eight no
 \end{figure}
 
 
-In Table~\ref{tab:node-specifications}, node specifications are listed, including Millions of Instructions Per Second (MIPS), the buffer size in GB, the up and down bandwidth from/to e0 (the global gateway) in GB and power coefficients in W. The network links range from 700 bps to 50,000 bps, forming a heterogeneous environment suitable for analyzing resource allocation and routing strategies under variable link constraints.
+In Table~\ref{tab:node-specifications}, node specifications are listed, including Millions of Instructions Per Second (MIPS) which is the CPU frequency, the buffer size in GB, the up and down bandwidth from/to e0 (the global gateway) in GB and power coefficients in W. The network links range from 700 bps to 50,000 bps, forming a heterogeneous environment suitable for analyzing resource allocation and routing strategies under variable link constraints.
 
 
 \begin{table*}[h!]
@@ -799,22 +804,22 @@ c1 & Cloud & 7 & 500 & 51 & 3 & 3 & 250 & 1000 & Belgium \\ \hline
 
 Since our modeling framework assigns zero latency and energy values to tasks that fail to be successfully offloaded, the primary optimization objective becomes the minimization of the \emph{task rejection rate}. This constraint is essential to prevent model degeneration, where the system could exploit the null assignment by deliberately rejecting tasks to artificially improve energy and latency performance metrics.
 
-To further stabilize optimization, we adopt a hierarchical prioritization scheme that emphasizes latency over energy efficiency, as latency more directly impacts user experience and system responsiveness. This prioritization is reflected in the reward weight hierarchy:
+In order to enhance the stability of the optimization process, a hierarchical prioritization scheme has been adopted, with a greater emphasis on latency in comparison to energy efficiency. This is due to the fact that latency exerts a more direct influence on both the user experience and the system's responsiveness. This prioritization is reflected in the reward weight hierarchy:
+
 \[
 \lambda_0 \gg \lambda_1 > \lambda_2.
 \]
 
-Based on empirical evaluation of different configurations using a Multi-Layer Perceptron (MLP) architecture trained with Deep Q-Reinforcement Learning (DQL), we selected the following reward weight distribution:
+Based on empirical evaluation of different configurations using a MLP architecture trained with DQL, we selected the following reward weight distribution:
+
 \[
 \textbf{Reward weights } (\lambda) = [1,\; 0.1,\; 0.05].
 \]
 
-Finally, to improve clarity and maintain consistency across training and evaluation, the energy consumption metric is reported in terms of power consumption throughout the experimental analysis.
-
 
 \subsubsection{Model Configurations}
 
-The complete hyperparameter specifications are detailed in Table~\ref{tab:model_specifications}. These specifications guide the architecture and training of both the MLP and Transformer models under the DQL algorithm.
+The complete hyperparameter specifications are detailed in Table~\ref{tab:model_specifications}. These specifications guide the architecture and training of both the MLP and Transformer models under the DQL algorithm. Feature used as input include task attributes for T-models.
 
 
 \begin{table}[H]
@@ -830,7 +835,7 @@ Number of heads ($n_{\text{heads}}$) & 4 & - \\ \hline
 Feed Forward Network ($d_{\text{ff}}$) & 256 & - \\ \hline
 Dropout & 0.2 & 0 \\ \hline
 Activation function & GELU & ReLU \\ \hline
-Input features & \{cpu, bw, buffer\} & \{cpu, bw, buffer\} \\ \hline
+Input features & \{cpu, bw, buffer\} + \{task\_type\}  \\ \hline
 \end{tabular}%
 }
 \caption{Model Specifications}\label{tab:model_specifications}
@@ -876,6 +881,10 @@ MLP
  & 0.1111
  & 4.332
  & 349.0 \\
+T-MLP 
+ & 0.1889
+    & 4.768
+    & 346.1 \\
 NOTE 
  & \textbf{0.0000} 
  & 4.150
@@ -890,7 +899,8 @@ T-NOTE
 \label{tab:results_comparison}
 \end{table*}
 
-The Deep Q-Learning (DQL)-based approaches demonstrate substantial improvements over the Greedy baseline, with progressively refined architectures yielding incremental performance gains. The MLP strategy achieves a TTR of 0.1111\%, representing a 41.2\% reduction compared to Greedy, while concurrently reducing latency to 4.332 seconds (1.4\% improvement). However, this improvement incurs a 3.0\% increase in energy consumption (349.0~W versus 338.7~W), suggesting that the MLP's learned policy prioritizes reliability and responsiveness over energy efficiency.
+
+The Deep Q-Learning (DQL)-based approaches demonstrate substantial improvements over the Greedy baseline, with progressively refined architectures yielding incremental performance gains. The MLP strategy achieves a TTR of 0.1111\%, representing a 41.2\% reduction compared to Greedy, while concurrently reducing latency to 4.332 seconds (1.4\% improvement). However, this improvement incurs a 3.0\% increase in energy consumption (349.0~W versus 338.7~W), suggesting that the MLP's learned policy prioritizes reliability and responsiveness over energy efficiency. Incorporating task attributes into features, as illustrated by T-MLP, consequently degrades the performance of MLP, resulting in worse performance than Greedy.
 
 The transformer-based NOTE architecture advances performance further by eliminating task failures entirely (0.0000\% TTR) and reducing latency to 4.150 seconds (5.5\% improvement over Greedy), while maintaining comparable energy consumption (337.6~W). This enhancement can be attributed to the transformer encoder's capacity to capture complex interdependencies among node observations through self-attention mechanisms.
 
@@ -927,7 +937,7 @@ T-NOTE (energy-optimized)
 
 The heuristic baselines exhibit TTRs exceeding 14\% and latencies above 18 seconds. These poor performance characteristics stem from their simplistic task assignment mechanisms, which distribute tasks uniformly without consideration of node resource capacities. While this approach achieves low energy consumption (approximately 239~W) by utilizing a larger number of fog nodes~\ref{subsec:random}, it fundamentally fails to meet performance requirements.
 
-In contrast, the Greedy approach achieves a TTR of 0.1889\% and latency of 4.394 seconds by preferentially selecting nodes with the highest available CPU resources~\ref{subsec:greedy-baseline}. However, this strategy results in elevated energy consumption (338.7~W) due to the concentration of tasks on high-capacity nodes.
+In contrast, the Greedy approach achieves a TTR of 0.1889\% and latency of 4.394 seconds by preferentially selecting nodes with the highest available CPU resources~\ref{subsec:greedy-baseline}, but increased energy consumption (338.7~W). This leads to the classification of performance-centric strategies.
 
 When configured with energy-optimized reward weights, T-NOTE achieves a TTR approximately 40 times lower and latency approximately 3.5 times lower than the heuristic baselines, while maintaining comparable energy consumption (238.0~W). This result demonstrates that T-NOTE can be effectively adapted to diverse optimization objectives through reward weight configuration, highlighting both the effectiveness and flexibility of the proposed DRL-based approach for task offloading in hierarchical edge-fog-cloud environments.
 
@@ -935,7 +945,7 @@ When configured with energy-optimized reward weights, T-NOTE achieves a TTR appr
 
 \subsection{MLP-Based DQL}\label{subsec:mlp_perf}
 
-The MLP-based DQL approach employs a feed-forward neural network to estimate Q-values for each node based on the current system state, incorporating CPU availability, buffer capacity, and link bandwidth as input features. With approximately 75,000 parameters, this model maintains computational efficiency and suitability for resource-constrained environments. However, this architectural simplicity may limit the model's capacity to capture complex task-node interactions, potentially constraining performance in dynamic or heterogeneous deployment scenarios.
+With approximately 75,000 parameters, the MLP-based model maintains computational efficiency and suitability for resource-constrained environments. However, this architectural simplicity may limit the model's capacity to predict effective node assignments. T-MLP suggests that the architecture struggles to capture or generalize complex task-node interactions, potentially due to high variability in task features and the MLP's limited representational capacity. Indeed, the model exhibits poor generalization, as T-MLP obtains better results than MLP on the validation set but worse results on the test set, indicating overfitting.
 
 \paragraph{Robustness and Performance}
 
@@ -986,7 +996,6 @@ The additional features, added by the task-level attributes, enable more context
 
 Similar to NOTE, T-NOTE exhibits rapid score improvement during the initial epoch, reflecting quick adaptation to the task offloading problem. However, unlike NOTE, which experiences performance degradation after epoch 4, T-NOTE demonstrates continued exploration capabilities. The score exhibits a secondary descent from epoch 16 through the final training epoch. This behavior indicates that the model continues to refine its policy in pursuit of improved solutions, suggesting that the task-aware attention mechanism provides sufficient representational capacity to avoid premature convergence to local optima. This sustained exploration capability, combined with the model's ability to leverage task-specific information, enables T-NOTE to discover superior offloading strategies that achieve the best overall performance across all evaluation metrics during the test, as demonstrated in Table~\ref{tab:results_comparison}.
 
-\subsection{Discussion}
 
 \subsection{Discussion}
 
@@ -1091,7 +1100,7 @@ However, this strategy results in significant fog device underutilization, with 
 
 The performance characteristics in Figure~\ref{fig:mlp-avg-latency} confirm the cloud-centric strategy's effectiveness in achieving low latency objectives while revealing limitations in energy distribution. Concentrating task processing at cloud nodes minimizes communication and processing latency but creates substantial energy burden on cloud infrastructure. This trade-off reflects the single-objective optimization focus inherent in the DQL approach, where the primary goal is maximizing a unified reward function rather than explicitly balancing multiple competing objectives.
 
-\subsection{NOTE}
+\subsubsection{NOTE}
 
 The NOTE architecture represents a significant advancement over traditional MLP-based approaches by incorporating explicit attention mechanisms for task attribute processing. 
 
@@ -1111,7 +1120,8 @@ Even though NOTE have a similar task offloading distribution as Greedy, as shown
     \label{fig:T-NOTE-avg-latency}
 \end{figure}
 
-The power consumption across nodes is also similar to Greedy, as shown in Figure~\ref{fig:T-NOTE-energy-consumption}, with intensive cloud consumptions while other nodes are consuming very little power. 
+The power consumption and the CPU frequency utilization across nodes is also similar to Greedy, as shown in Figure~\ref{fig:T-NOTE-energy-consumption} and Figure~\ref{fig:T-NOTE-cpu-frequency}, with intensive cloud utilisation and power consumption while other nodes steps back.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/NOTE/power_consumption_per_node.png}
@@ -1120,14 +1130,18 @@ The power consumption across nodes is also similar to Greedy, as shown in Figure
 \end{figure}
 
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/NOTE/cpu_frequency_per_node.png}
+    \caption{Average CPU frequency utilization per node for NOTE}
+    \label{fig:T-NOTE-cpu-frequency}
+\end{figure}
 
 
 \subsubsection{T-NOTE}\label{subsubsec:T-NOTE-analysis}
 
+Incorporating task-level features in the T-NOTE architecture leads to surprising results in terms of offloading strategies. Tasks are predominantly offloaded to the edge, as shown in Figure~\ref{fig:T-NOTE-offloading-stats}, which differs from other approaches since the edge has a lower CPU frequency. Tasks are also frequently offloaded to Fog Node 1, which has the lowest CPU frequency among fog nodes. By examining the node specifications in Table~\ref{tab:node-specifications}, we observe that these nodes have the highest MIPS/power consumption ratio, making them the most energy-efficient nodes.
 
-
-Including task-level features in the T-NOTE architecture conduct to surprising resuts in terms of offloading strategies. Task are widely offloaded to the edge, as shown in Figure~\ref{fig:T-NOTE-offloading-stats}, which is not the case for other approaches since the edge had a lower cpu frequency. task are also widely offloaded on The Fog nodes 1, wich is the node with the lowest CPU frequency on fog. By investigates in the nodes specifications, Table~\ref{tab:node-specifications}, we notice that these nodes have the highest ratio MIPS/Power consumption, which means that they are the most energy efficient nodes. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/T-NOTE/task_offloading_statistics.png}
@@ -1135,12 +1149,9 @@ Including task-level features in the T-NOTE architecture conduct to surprising r
     \label{fig:T-NOTE-offloading-stats}
 \end{figure}
 
-The cloud still widely used, but less than other approaches, beeing close of equal with e0 and f1. This indicates that T-NOTE has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes. 
+The cloud remains widely utilized but less so than in other approaches, with usage nearly equal to that of e0 and f1. This indicates that T-NOTE has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes.
 
-The 
-edge does have high wait time, but compensated by no transmission time such it is located at GG.
-
-2. fog 1 has low wait time and low transmission time, making it an ideal candidate for offloading.
+Figure~\ref{fig:T-NOTE-avg-latency} demonstrates that while the edge experiences high wait times, this is compensated by the absence of transmission time since it is co-located at the GG.
 
 \begin{figure}[H]
     \centering
@@ -1149,10 +1160,6 @@ edge does have high wait time, but compensated by no transmission time such it i
     \label{fig:T-NOTE-avg-latency}
 \end{figure}
 
-The average latency per network link, depicted in Figure~\ref{fig:T-NOTE-avg-latency}, shows that T-NOTE achieves lower latency across all links compared to other approaches. This improvement is particularly notable for links connecting to fog nodes, which benefit from reduced queuing delays due to more balanced task distribution.
-
-
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/T-NOTE/cpu_frequency_per_node.png}
@@ -1160,9 +1167,7 @@ The average latency per network link, depicted in Figure~\ref{fig:T-NOTE-avg-lat
     \label{fig:T-NOTE-cpu-frequency}
 \end{figure}
 
-the figure fig:T-NOTE-cpu-frequency an higher cpu utilisation than other stragies even thow that the number of task ofloaded is low, by calculateting the ratio cpu used/task offloaded, it highlighted 130 for the Clouds Nodes 5.9 for the Edge and 27.7 for Fog Node 1. This indicates that T-NOTE, throw its awerness of task features, offlaod low cpu intensive tasks to low cpu frequency but efficients nodes, and high cpu intensive tasks to high cpu frequency nodes, highlighting the effectiveness of task-aware models
-
-
+Figure~\ref{fig:T-NOTE-cpu-frequency} reveals higher MIPS utilization than other strategies despite a lower number of offloaded tasks. By calculating the ratio of CPU frequency used per task offloaded, we obtain 130 for cloud nodes, 5.9 for edge nodes, and 27.7 for Fog Node 1. This indicates that T-NOTE, through its awareness of task attributes, offloads low CPU-intensive tasks (characterized by low task size and low cycles per bit) to low CPU frequency but energy-efficient nodes, while directing high CPU-intensive tasks to high CPU frequency nodes. This behavior highlights the effectiveness of task-aware models.
 
 \begin{figure}[H]
     \centering
@@ -1171,46 +1176,44 @@ the figure fig:T-NOTE-cpu-frequency an higher cpu utilisation than other stragie
     \label{fig:T-NOTE-power-consumption}
 \end{figure}
 
+Figure~\ref{fig:T-NOTE-power-consumption} shows lower power consumption on cloud nodes compared to all performance-centric approaches, despite higher CPU frequency utilization. Examining the power consumption breakdown reveals a slight increase in execution power consumption (proportional to task size $\times$ cycles per bit) but a significant decrease in transmission power consumption (proportional to task size). This suggests that T-NOTE offloads tasks with a high cycles-per-bit-to-size ratio to the cloud, while routing other tasks to edge and fog nodes, which offer more efficient transmission power consumption.
+
+% \subsubsection{T-NOTE energy }
 
 
-\subsection{T-NOTE energy }
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/task_offloading_statistics.png}
+%     \caption{Task offloading distribution for T-NOTE4E}
+%     \label{fig:T-NOTE4E-offloading-stats}
+% \end{figure}
 
+% The cloud still widely used, but less than other approaches, beeing close of equal with e0 and f1. This indicates that T-NOTE4E has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes. 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/task_offloading_statistics.png}
-    \caption{Task offloading distribution for T-NOTE4E}
-    \label{fig:T-NOTE4E-offloading-stats}
-\end{figure}
+% Figure~\ref{fig:T-NOTE4E-avg-latency} shows that while the edge does have high wait time, it is in part compensated by no transmission time since it is located at GG. Even this the average latency for the edge is high, but 
 
-The cloud still widely used, but less than other approaches, beeing close of equal with e0 and f1. This indicates that T-NOTE4E has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes. 
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/avg_latency_per_link.png}
+%     \caption{Average latency per network link for T-NOTE4E}
+%     \label{fig:T-NOTE4E-avg-latency}
+% \end{figure}
 
-edge does have high wait time, but compensated by no transmission time such it is located at GG.
+% The average latency per network link, depicted in Figure~\ref{fig:T-NOTE4E-avg-latency}, shows that T-NOTE4E achieves lower latency across all links compared to other approaches. This improvement is particularly notable for links connecting to fog nodes, which benefit from reduced queuing delays due to more balanced task distribution.
 
-2. fog 1 has low wait time and low transmission time, making it an ideal candidate for offloading.
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/energy_consumption_per_node.png}
+%     \caption{Energy consumption distribution for T-NOTE4E}
+%     \label{fig:T-NOTE4E-energy-consumption}
+% \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/avg_latency_per_link.png}
-    \caption{Average latency per network link for T-NOTE4E}
-    \label{fig:T-NOTE4E-avg-latency}
-\end{figure}
-
-The average latency per network link, depicted in Figure~\ref{fig:T-NOTE4E-avg-latency}, shows that T-NOTE4E achieves lower latency across all links compared to other approaches. This improvement is particularly notable for links connecting to fog nodes, which benefit from reduced queuing delays due to more balanced task distribution.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/energy_consumption_per_node.png}
-    \caption{Energy consumption distribution for T-NOTE4E}
-    \label{fig:T-NOTE4E-energy-consumption}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/cpu_frequency_per_node.png}
-    \caption{CPU frequency utilization per node type for T-NOTE4E}
-    \label{fig:T-NOTE4E-cpu-frequency}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/cpu_frequency_per_node.png}
+%     \caption{CPU frequency utilization per node type for T-NOTE4E}
+%     \label{fig:T-NOTE4E-cpu-frequency}
+% \end{figure}
 
 \subsection{GA-based Results and Comparison}\label{subsec:ga_vs_DQL}
 
