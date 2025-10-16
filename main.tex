@@ -988,8 +988,11 @@ Similar to NOTE, T-NOTE exhibits rapid score improvement during the initial epoc
 
 \subsection{Discussion}
 
-The results demonstrate the effectiveness DQL-based approaches for task offloading in hierarchical edge-fog-cloud environments. The MLP-based DQL model, while computationally efficient, exhibits limitations in capturing complex task-node interactions, leading to less stable convergence and suboptimal performance compared to transformer-based methods. In contrast, the NOTE and T-NOTE architectures leverage self-attention mechanisms to effectively model inter-node relationships and task-specific contexts, resulting in superior performance across all evaluation metrics. However, the increased performance comes with an additional computational complexity, especially for transformer-based models, which may limit their applicability in resource-constrained environments.
-The DQL suffers also of the fact that it require experimental reward weight tuning to achieve the desired trade-off between TTR, latency, and energy consumption. Reward weights tuning does not always follow a linear relationship with the performance metrics and intuitive behavior, making it challenging to predict the exact impact of weight adjustments on the overall performance. These trade-offs can lead to unexpected outcomes, where small changes in weights result in significant performance variations, complicating the optimization process.
+\subsection{Discussion}
+
+The results demonstrate the effectiveness of DQL-based approaches for task offloading in hierarchical edge-fog-cloud environments. While computationally efficient, the MLP-based DQL model exhibits limitations in capturing complex task-node interactions, leading to less stable convergence and suboptimal performance compared to Transformer-based methods. In contrast, the NOTE and T-NOTE architectures leverage self-attention mechanisms to effectively model inter-node relationships and task-specific contexts, achieving superior performance across all evaluation metrics. However, this increased performance comes with higher computational complexity, especially for Transformer-based models, which may limit their applicability in resource-constrained environments.
+
+DQL also requires careful reward weight tuning to achieve the desired trade-off between TTR, latency, and energy consumption. Reward weight tuning does not always follow a linear relationship with performance metrics or exhibit intuitive behavior, making it challenging to predict the exact impact of weight adjustments on overall performance. These problems can lead to unexpected outcomes, where small changes in weights result in significant performance variations, complicating the optimization process.
 
 \subsection{Offloading Analysis}\label{subsec:offloading-analysis}
 
@@ -1124,7 +1127,7 @@ The power consumption across nodes is also similar to Greedy, as shown in Figure
 
 
 
-Including task-level features in the T-NOTE architecture conduct to surprising resuts in terms of offloading strategies. The edge node is widely is utilized, as shown in Figure~\ref{fig:T-NOTE-offloading-stats}, which is not the case for other approaches. It also 
+Including task-level features in the T-NOTE architecture conduct to surprising resuts in terms of offloading strategies. Task are widely offloaded to the edge, as shown in Figure~\ref{fig:T-NOTE-offloading-stats}, which is not the case for other approaches since the edge had a lower cpu frequency. task are also widely offloaded on The Fog nodes 1, wich is the node with the lowest CPU frequency on fog. By investigates in the nodes specifications, Table~\ref{tab:node-specifications}, we notice that these nodes have the highest ratio MIPS/Power consumption, which means that they are the most energy efficient nodes. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/T-NOTE/task_offloading_statistics.png}
@@ -1132,9 +1135,12 @@ Including task-level features in the T-NOTE architecture conduct to surprising r
     \label{fig:T-NOTE-offloading-stats}
 \end{figure}
 
-Figure~\ref{fig:T-NOTE-offloading-stats} reveals that T-NOTE maintains a preference for cloud nodes while demonstrating more sophisticated resource allocation strategies. The approach judiciously employs fog resources when cloud queues experience congestion or when specific tasks require lower-latency local processing. This adaptive behavior stems from the Transformer architecture's ability to capture complex relationships between task characteristics, network conditions, and node capabilities through its attention mechanism.
+The cloud still widely used, but less than other approaches, beeing close of equal with e0 and f1. This indicates that T-NOTE has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes. 
 
-The balanced allocation strategy becomes more apparent when examining the latency characteristics across different network links. Unlike the MLP approach, T-NOTE occasionally utilizes edge nodes for specific use cases, particularly for small computational tasks or time-sensitive operations where local processing provides advantages despite limited computational resources.
+The 
+edge does have high wait time, but compensated by no transmission time such it is located at GG.
+
+2. fog 1 has low wait time and low transmission time, making it an ideal candidate for offloading.
 
 \begin{figure}[H]
     \centering
@@ -1143,12 +1149,9 @@ The balanced allocation strategy becomes more apparent when examining the latenc
     \label{fig:T-NOTE-avg-latency}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE/energy_consumption_per_node.png}
-    \caption{Energy consumption distribution for T-NOTE}
-    \label{fig:T-NOTE-energy-consumption}
-\end{figure}
+The average latency per network link, depicted in Figure~\ref{fig:T-NOTE-avg-latency}, shows that T-NOTE achieves lower latency across all links compared to other approaches. This improvement is particularly notable for links connecting to fog nodes, which benefit from reduced queuing delays due to more balanced task distribution.
+
+
 
 \begin{figure}[H]
     \centering
@@ -1157,19 +1160,61 @@ The balanced allocation strategy becomes more apparent when examining the latenc
     \label{fig:T-NOTE-cpu-frequency}
 \end{figure}
 
-The energy consumption and CPU utilization patterns shown in Figures~\ref{fig:T-NOTE-energy-consumption} and \ref{fig:T-NOTE-cpu-frequency} illustrate that cloud nodes continue to dominate in both power usage and computational utilization. This dominance aligns with the high resource availability at cloud level and the reward function's emphasis on minimizing task failures and processing latency. However, the partial utilization of fog nodes represents a strategic improvement over the MLP approach, as it helps mitigate congestion at the cloud level while maintaining overall system performance.
+the figure fig:T-NOTE-cpu-frequency an higher cpu utilisation than other stragies even thow that the number of task ofloaded is low, by calculateting the ratio cpu used/task offloaded, it highlighted 130 for the Clouds Nodes 5.9 for the Edge and 27.7 for Fog Node 1. This indicates that T-NOTE, 
 
-The T-NOTE's adaptive decision-making capability enables it to recognize scenarios where distributed processing across multiple node types provides superior outcomes compared to pure cloud-centric strategies. This flexibility becomes particularly valuable under varying network conditions and diverse task requirements, demonstrating the architecture's potential for real-world deployment scenarios where computational demands and network characteristics exhibit significant temporal and spatial variation.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/T-NOTE/power_consumption_per_node.png}
+    \caption{Power consumption distribution for T-NOTE}
+    \label{fig:T-NOTE-power-consumption}
+\end{figure}
+
 
 
 \subsection{T-NOTE energy }
 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/task_offloading_statistics.png}
+    \caption{Task offloading distribution for T-NOTE4E}
+    \label{fig:T-NOTE4E-offloading-stats}
+\end{figure}
 
+The cloud still widely used, but less than other approaches, beeing close of equal with e0 and f1. This indicates that T-NOTE4E has learned to balance performance and energy efficiency by leveraging the most powerful and energy-efficient nodes. 
+
+edge does have high wait time, but compensated by no transmission time such it is located at GG.
+
+2. fog 1 has low wait time and low transmission time, making it an ideal candidate for offloading.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/avg_latency_per_link.png}
+    \caption{Average latency per network link for T-NOTE4E}
+    \label{fig:T-NOTE4E-avg-latency}
+\end{figure}
+
+The average latency per network link, depicted in Figure~\ref{fig:T-NOTE4E-avg-latency}, shows that T-NOTE4E achieves lower latency across all links compared to other approaches. This improvement is particularly notable for links connecting to fog nodes, which benefit from reduced queuing delays due to more balanced task distribution.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/energy_consumption_per_node.png}
+    \caption{Energy consumption distribution for T-NOTE4E}
+    \label{fig:T-NOTE4E-energy-consumption}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/cpu_frequency_per_node.png}
+    \caption{CPU frequency utilization per node type for T-NOTE4E}
+    \label{fig:T-NOTE4E-cpu-frequency}
+\end{figure}
 
 \subsection{GA-based Results and Comparison}\label{subsec:ga_vs_DQL}
 
-To evaluate alternatives to DQL, we assess the performance of NSGA-II and NPGA for training the MLP architecture. This comparative analysis elucidates the strengths and limitations of multi-objective evolutionary strategies relative to DQL approaches in hierarchical edge-fog-cloud task offloading. Since GA-based methods are not designed to handle high-dimensional models, both GA-based (NSGA-II and NPGA) and DQL approaches train a 2-layer MLP with model dimension of 64, totaling 6,664 trainable parameters and using identical input features (CPU, buffer, and bandwidth). However, each approach yields distinct convergence properties and solution spaces.
+As tuning reward weights in DQL is challenging, multi-objective optimization techniques offer a well-suited alternative to address this issue. To evaluate the effectiveness of these techniques in this context, we assess the performance of NSGA-II and NPGA for training the MLP architecture. This comparative analysis elucidates the strengths and limitations of multi-objective evolutionary strategies relative to DQL approaches in hierarchical edge-fog-cloud task offloading. Since GA-based methods are not primarily designed to handle high-dimensional DDNs models, both GA-based approaches (NSGA-II and NPGA) and DQL methods train a 2-layer MLP with a model dimension of 64, totaling 6,664 trainable parameters and utilizing identical input features (CPU, buffer, and bandwidth). However, each approach yields distinct convergence properties and solution spaces.
 
 \subsubsection{Convergence Behavior}
 
@@ -1254,16 +1299,19 @@ The experimental results highlighted that task-aware Transformer architectures c
 
 \subsection{Perspectives}
 
-Several promising research directions emerge from this work that warrant further investigation:
+
+\subsubsection{Reward weights tuning}
+
+Automatically tuning the reward weights would be a significant improvement to the DQL approach. This could involve meta-learning techniques or adaptive weight adjustment based on observed performance metrics during training. Automating this process would reduce the reliance on manual tuning and enhance the robustness of the offloading strategy across varying scenarios.
+
 
 \paragraph{Advanced Reinforcement Learning Architectures}
-Future work should explore policy gradient methods such as Proximal Policy Optimization (PPO), Advantage Actor-Critic (A2C), and Deep Deterministic Policy Gradient (DDPG), which may offer improved stability and sample efficiency compared to value-based DQL approaches. Additionally, investigating hybrid architectures that combine the exploratory capabilities of evolutionary algorithms with the gradient-based optimization of deep learning could yield more robust solutions.
+Future work should explore policy gradient methods such as Proximal Policy Optimization (PPO), Advantage Actor-Critic (A2C), and Deep Deterministic Policy Gradient (DDPG), which may offer improved stability and sample efficiency compared to value-based DQL approaches.
+
 
 \paragraph{Multi-Objective Optimization}
 A more extensive investigation of multi-objective genetic algorithms could provide valuable insights into the trade-offs between different QoS metrics. Developing lightweight variants of GA suitable for high-dimensional parameter spaces would enable the discovery of comprehensive Pareto frontiers for complex neural architectures.
 
-\paragraph{Scalability and Generalization}
-Evaluating the proposed approaches on larger-scale networks with heterogeneous IoT devices, diverse application domains, and varying traffic patterns would validate their scalability and generalization capabilities. Transfer learning techniques could be investigated to enable pre-trained models to adapt rapidly to new deployment environments with minimal retraining.
 
 
  \bibliographystyle{elsarticle-harv} 
