@@ -989,110 +989,100 @@ Similar to NOTE, T-NOTE exhibits rapid score improvement during the initial epoc
 
 \subsection{Offloading Analysis}\label{subsec:offloading-analysis}
 
-This section presents a comprehensive analysis of the offloading strategies employed by different approaches, examining their performance characteristics, resource utilization patterns, and trade-offs. The analysis is structured to provide insights into how each method addresses the fundamental challenges of task allocation in hierarchical edge-fog-cloud computing environments.
+This section analyzes the offloading strategies employed by different approaches, examining their performance characteristics, resource utilization patterns, and trade-offs. The analysis provides insights into how each method addresses task allocation challenges in hierarchical edge-fog-cloud computing environments.
 
-A comparative evaluation of offloading policies reveals that \emph{Transformer-based DQL} demonstrates superior robustness by achieving an optimal balance between latency minimization and TTR compared to alternative approaches. While multi-objective GA methods provide a diverse set of Pareto-optimal solutions enabling flexible trade-off selection, MLP-based DQL maintains computational efficiency as its primary advantage. The following subsections provide detailed analysis of node utilization patterns, performance metrics, and the underlying decision-making characteristics of selected methodologies.
+Comparative evaluation reveals that \emph{Transformer-based DQL} achieves superior robustness by optimally balancing latency minimization and task throw rate (TTR). While multi-objective genetic algorithm (GA) methods provide diverse Pareto-optimal solutions enabling flexible trade-off selection, MLP-based DQL offers computational efficiency as its primary advantage. The following subsections analyze node utilization patterns, performance metrics, and decision-making characteristics of the selected methodologies.
 
-\subsubsection{Random}
+\subsubsection{Random Baseline}
 \label{subsec:random}
 
-The Random offloading strategy serves as a baseline for evaluating the effectiveness of more sophisticated task allocation policies in hierarchical edge-fog-cloud environments. By randomly assigning tasks to available nodes, this approach lacks any awareness of the underlying resource capabilities, often leading to inefficient resource utilization, increased latency and high task failure rates on the low-end nodes as show in the Figure~\ref{fig:random-task-offloading-stats}
+The random offloading strategy serves as a baseline for evaluating sophisticated task allocation policies. By randomly assigning tasks to available nodes without awareness of resource capabilities, this approach leads to inefficient resource utilization, increased latency, and high task failure rates on low-end nodes, as shown in Figure~\ref{fig:random-task-offloading-stats}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Random/task_offloading_statistics.png}
-    \caption{Task offloading distribution across node types for the Random baseline}
+    \caption{Task offloading distribution across node types for the random baseline.}
     \label{fig:random-task-offloading-stats}
 \end{figure}
 
-The Figure~\ref{fig:random-power-consumption} illustrates the power consumption across different nodes. The Cloud nodes, with their higher computational capabilities, tend to consume more power compare to the Edge and Fog nodes for an equivalent number of tasks. 
+Figure~\ref{fig:random-power-consumption} illustrates power consumption across different nodes. Cloud nodes, with their higher computational capabilities, consume more power than edge and fog nodes for an equivalent number of tasks.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Random/power_consumption_per_node.png}
-    \caption{Power consumption per node for the Random baseline}
+    \caption{Power consumption per node for the random baseline.}
     \label{fig:random-power-consumption}
 \end{figure}
 
 
-
-\subsubsection{Greedy (baseline)}
+\subsubsection{Greedy Baseline}
 \label{subsec:greedy-baseline}
 
-The Greedy offloading strategy serves as a fundamental baseline for evaluating the effectiveness of more sophisticated task allocation policies in hierarchical edge-fog-cloud environments. The Greedy method's simplicity enables rapid decision-making but often leads to suboptimal global performance due to its myopic nature. 
-
+The greedy offloading strategy provides another fundamental baseline for evaluation. While its simplicity enables rapid decision-making, the method's myopic nature often leads to suboptimal global performance.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Greedy/task_offloading_statistics.png}
-    \caption{Task offloading distribution across node types for the Greedy baseline}
+    \caption{Task offloading distribution across node types for the greedy baseline.}
     \label{fig:greedy-task-offloading-stats}
 \end{figure}
 
-Figure~\ref{fig:greedy-task-offloading-stats} illustrates the distribution of task assignments across edge, fog, and cloud nodes under the Greedy policy. The results indicate a strong preference for offloading to nodes with the higher CPU frequency, often resulting in a disproportionate allocation to cloud nodes, making these nodes more asked for CPU resources as illustrated in Figure~\ref{fig:greedy-cpu-freq}.
-
-
+Figure~\ref{fig:greedy-task-offloading-stats} shows the distribution of task assignments across edge, fog, and cloud nodes under the greedy policy. The results indicate a strong preference for nodes with higher CPU frequency, resulting in disproportionate allocation to cloud nodes and increased CPU resource demands, as illustrated in Figure~\ref{fig:greedy-cpu-freq}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Greedy/cpu_frequency_per_node.png}
-    \caption{Average CPU frequency utilization per node for the Greedy baseline.}
+    \caption{Average CPU frequency utilization per node for the greedy baseline.}
     \label{fig:greedy-cpu-freq}
 \end{figure}
 
-
-The average communication latency per network link, depicted in Figure~\ref{fig:greedy-avg-latency}, demonstrates that the transmission delays are almost uniformly distributed across all links with a slight increase for links connecting to cloud nodes due to the distance of the nodes. These transmission delays are a main contributor to the overall task processing latency. Followed the waiting time in the queue for the fogs nodes such the there prossecing ability is not enought to handle the flow of tasks.
+The average communication latency per network link, depicted in Figure~\ref{fig:greedy-avg-latency}, shows transmission delays are nearly uniformly distributed across links, with slight increases for cloud node connections due to greater distances. These transmission delays, combined with queuing time at fog nodes whose processing capacity is insufficient to handle task flow, are the main contributors to overall task processing latency.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Greedy/avg_latency_per_link.png}
-    \caption{Average communication latency per network link for the Greedy baseline.}
+    \caption{Average communication latency per network link for the greedy baseline.}
     \label{fig:greedy-avg-latency}
 \end{figure}
 
-
-Figures~\ref{fig:greedy-power-consumption} present the power consumption across different nodes. The Cloud nodes, consume more power compared to the Edge and Fog nodes for an equivalent number of tasks. This trend is particularly pronounced in the Greedy strategy, which favors cloud offloading, leading to increased energy consumption at these nodes.
+Figure~\ref{fig:greedy-power-consumption} presents power consumption across different nodes. Cloud nodes consume more power than edge and fog nodes for equivalent task volumes. This trend is particularly pronounced in the greedy strategy, which favors cloud offloading, leading to increased energy consumption at these nodes.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/Greedy/power_consumption_per_node.png}
-    \caption{Power consumption distribution across different node types for the Greedy baseline.}
+    \caption{Power consumption distribution across node types for the greedy baseline.}
     \label{fig:greedy-power-consumption}
 \end{figure}
 
 
 \subsubsection{MLP-Based DQL Performance Analysis}\label{subsubsec:mlp-DQL-analysis}
 
-% The MLP-based approach, whether evolved through genetic algorithms or trained via deep Q-learning, demonstrates convergence to similar offloading patterns in the final policy. For comprehensive analysis, this study focuses on the DQL variant of the MLP implementation, as the solution founded for DQL is really near than the GA-based multi-objective that minimize the reward weights $(\lambda)$.
-
-As illustrated in Figure~\ref{fig:mlp-task-offloading-stats}, the MLP-based policy exhibits an aggressive cloud-centric offloading strategy. This approach prioritizes cloud node utilization to minimize both task throw rate (TTR) and processing latency, directly reflecting the optimization objective defined by the high weighting factors $\lambda_0$ (failure penalty) and $\lambda_1$ (latency penalty) in the reward function. The policy demonstrates a clear preference for leveraging the superior computational resources available in cloud nodes, which possess higher processing capabilities and more stable connectivity compared to edge and fog alternatives.
+As illustrated in Figure~\ref{fig:mlp-task-offloading-stats}, the MLP-based policy exhibits a cloud-centric offloading strategy. This approach prioritizes cloud node utilization to minimize both TTR and processing latency, directly reflecting the optimization objective defined by the high weighting factors $\lambda_0$ (failure penalty) and $\lambda_1$ (latency penalty) in the reward function. The policy demonstrates clear preference for leveraging superior computational resources in cloud nodes, which possess higher processing capabilities and more stable connectivity than edge and fog alternatives.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/MLP/task_offloading_statistics.png}
-    \caption{Task offloading distribution across node types for MLP-based DQL, showing the proportion of tasks allocated to edge, fog, and cloud nodes}
+    \caption{Task offloading distribution across node types for MLP-based DQL.}
     \label{fig:mlp-task-offloading-stats}
 \end{figure}
 
-However, this strategy results in significant underutilization of fog devices, as any tasks are offloaded to the fog, which represents an intermediate tier of computational resources that could potentially provide a more balanced trade-off between performance and energy efficiency. The heavy reliance on cloud computing infrastructure leads to a concentration of energy consumption at the cloud level, as depicted in the subsequent power consumption analysis as high in Figure~\ref{fig:mlp-power-consumption}.
-
+However, this strategy results in significant fog device underutilization, with minimal task offloading to this intermediate tier that could potentially provide balanced trade-offs between performance and energy efficiency. The heavy reliance on cloud infrastructure concentrates energy consumption at the cloud level, as shown in Figure~\ref{fig:mlp-power-consumption}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/MLP/power_consumption_per_node.png}
-    \caption{Power consumption distribution across different node types for MLP-based DQL}
+    \caption{Power consumption distribution across node types for MLP-based DQL.}
     \label{fig:mlp-power-consumption}
 \end{figure}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/MLP/avg_latency_per_link.png}
-    \caption{Average communication latency per network link for MLP-based DQL}
+    \caption{Average communication latency per network link for MLP-based DQL.}
     \label{fig:mlp-avg-latency}
 \end{figure}
 
-
-
-The performance characteristics shown in Figures~\ref{fig:mlp-avg-latency}  confirm the cloud-centric strategy's effectiveness in achieving low latency objectives while simultaneously revealing its limitations in terms of energy distribution. The concentration of task processing at cloud nodes results in minimal communication and processing latency but creates a substantial energy burden on cloud infrastructure. This trade-off reflects the single-objective optimization focus inherent in the DQL approach, where the primary goal is to maximize a unified reward function rather than explicitly balancing multiple competing objectives.
+The performance characteristics in Figure~\ref{fig:mlp-avg-latency} confirm the cloud-centric strategy's effectiveness in achieving low latency objectives while revealing limitations in energy distribution. Concentrating task processing at cloud nodes minimizes communication and processing latency but creates substantial energy burden on cloud infrastructure. This trade-off reflects the single-objective optimization focus inherent in the DQL approach, where the primary goal is maximizing a unified reward function rather than explicitly balancing multiple competing objectives.
 
 
 \subsubsection{Transformer-Based DQL (T-NOTE)}\label{subsubsec:T-NOTE-analysis}
@@ -1140,90 +1130,70 @@ The T-NOTE's adaptive decision-making capability enables it to recognize scenari
 
 \subsection{GA-based Results and Comparison}\label{subsec:ga_vs_DQL}
 
-To mitigate the DQL performance, we assess the performance of NSGA II, NPGA, for training the MLP architecture. This comparative analysis aims to elucidate the strengths and limitations of multiobjective evolutionary strategies relative to DQL approaches in the context of task offloading in hierarchical edge-fog-cloud environments. Such as GA-based methods for training MLPs are not designed to handle the high dimensionality models, both the GA-based (NSGA II and NPGA) and DQL methods are train a MLP of 2 layers and a model dimension of 64 with 6,664 trainable parameters, using the same input features (CPU, buffer, and bandwidth). However, each approach yields distinct convergence properties and solution spaces.
+To evaluate alternatives to DQL, we assess the performance of NSGA-II and NPGA for training the MLP architecture. This comparative analysis elucidates the strengths and limitations of multi-objective evolutionary strategies relative to DQL approaches in hierarchical edge-fog-cloud task offloading. Since GA-based methods are not designed to handle high-dimensional models, both GA-based (NSGA-II and NPGA) and DQL approaches train a 2-layer MLP with model dimension of 64, totaling 6,664 trainable parameters and using identical input features (CPU, buffer, and bandwidth). However, each approach yields distinct convergence properties and solution spaces.
 
 \subsubsection{Convergence Behavior}
-\paragraph{GA-based}
-The GA-based approach is more sensitive to initial population generation, and convergence behaviors can vary widely with different random seeds. As shown in Figure~\ref{fig:nsga2-mlp-training-epoch}, which is the evaluation of the best candidate according to the reward weight according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\) for each generation (epoch),  for NSGA II, which is almost similar to NPGA, training often exhibits fluctuations when searching for Pareto-optimal solutions, especially in the early stages of evolution. Although the algorithm eventually discovers high-quality solutions, it may require many generations (e.g., 100 generations with 40 individuals each) to achieve consistency.
+
+\paragraph{GA-based Approaches}
+GA-based approaches are more sensitive to initial population generation, with convergence behavior varying widely across different random seeds. As shown in Figure~\ref{fig:nsga2-mlp-training-epoch}, which evaluates the best candidate according to reward weight priorities \(\lambda_0 \gg \lambda_1 \gg \lambda_2\) for each generation, NSGA-II training (similar to NPGA) often exhibits fluctuations when searching for Pareto-optimal solutions, especially in early evolution stages. Although the algorithm eventually discovers high-quality solutions, it may require many generations (e.g., 100 generations with 40 individuals each) to achieve consistency.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{figs/nsga2_mlp_training_epoch.png}
-    \caption{Training Convergence for MLP with NSGA2 for the best individual, selected according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\).}  
+    \caption{Training convergence for MLP with NSGA-II, showing the best individual selected according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\).}  
     \label{fig:nsga2-mlp-training-epoch}  
 \end{figure}
 
-
-
-\paragraph{Performance}
+\paragraph{Performance Comparison}
 
 \begin{table*}[H]
 \centering
-
-
 \begin{tabular}{lccc}
-
-    \toprule
-
-\textbf{Offloading Strategies} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
-
-\middlerule
-
-DQL + MLP 
- & 0.07
- & 4.16 
- & 385 \\
-
+\toprule
+\textbf{Offloading Strategy} & \textbf{TTR (\%)} & \textbf{Latency (s)} & \textbf{Energy (W)} \\
+\midrule
+DQL + MLP & 0.07 & 4.16 & 385 \\
 \hline
-
-NSGA2 + MLP 
- & 0.07 
- & 4.16
- & 385 \\
- 
-NPGA + MLP 
- & 0.14 
- & 4.24 
- & 380 \\
-
+NSGA-II + MLP & 0.07 & 4.16 & 385 \\
+NPGA + MLP & 0.14 & 4.24 & 380 \\
 \bottomrule
-
-
 \end{tabular}
-
-\caption{Comparison of MLP with DQL, NPGA, and NSGA2 on Pakistan test set. Best candidate of the population of multiobjective GA is selected according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\).}\label{tab:mlp_comparison}
+\caption{Performance comparison of MLP with DQL, NPGA, and NSGA-II on Pakistan test set. Best candidate from the multi-objective GA population selected according to \(\lambda_0 \gg \lambda_1 \gg \lambda_2\).}
+\label{tab:mlp_comparison}
 \end{table*}
 
-Table~\ref{tab:mlp_comparison} summarizes the performance of MLP models trained using DQL, NSGA2, and NPGA. Both DQL and NSGA2 achieve identical performance metrics, with a TTR of 0.07\%, latency of 4.16 seconds, and energy consumption of 385~W. NPGA performs slightly worse, with a TTR of 0.14\%, latency of 4.24 seconds, and energy consumption of 380~W. This indicates that while both DQL and NSGA2 can effectively optimize the offloading policy, NPGA may struggle to find equally optimal solutions under the same conditions.
+Table~\ref{tab:mlp_comparison} summarizes the performance of MLP models trained using DQL, NSGA-II, and NPGA. Both DQL and NSGA-II achieve identical performance metrics: TTR of 0.07\%, latency of 4.16 seconds, and energy consumption of 385~W. NPGA performs slightly worse, with TTR of 0.14\%, latency of 4.24 seconds, and energy consumption of 380~W. This indicates that while both DQL and NSGA-II effectively optimize the offloading policy, NPGA may struggle to find equally optimal solutions under identical conditions.
 
-
-\paragraph{Trade-Off in Efficiency}
-A key advantage of DQL is the reduced computational burden—only one model is trained and updated across epochs (e.g., 10–20 epochs), compared to GA approaches that must evaluate a large population (e.g., 40 individuals) for multiple generations (e.g., 100). Hence, GA methods generally consume more time hours despite their ability to track multiple objectives.
+\paragraph{Computational Efficiency Trade-off}
+A key advantage of DQL is its reduced computational burden. Only one model is trained and updated across epochs (e.g., 10--20 epochs), compared to GA approaches that must evaluate large populations (e.g., 40 individuals) for multiple generations (e.g., 100). Consequently, GA methods generally require substantially more computational time despite their ability to optimize multiple objectives simultaneously.
 
 \subsubsection{Solution Space and Pareto Frontiers}
-Although DQL is effectively treating the problem as a single-objective function (via the weighted sum of different metrics in the reward), multi-objective GA methods (e.g., NSGA2, NPGA) discover a \emph{set} of Pareto-optimal solutions. This advantage is illustrated in Figures~\ref{fig:nsga2-pareto-frontiers} and~\ref{fig:npga-pareto-frontiers}, where multiple configurations of (latency, energy, throw rate) emerge along the final Pareto front. Practitioners can then choose the solution that best fits their operational needs (e.g., emphasizing latency more strongly or focusing on energy savings).
 
-DQL produces a single high-performing policy, which in practice falls somewhere within or near the Pareto front discovered by GA. Experimental results indicate that the DQL policy is generally comparable to those in the GA’s Pareto set. However, users requiring fine-grained trade-offs among metrics may prefer GA-based multi-objective solutions.
+While DQL effectively treats the problem as single-objective optimization (via weighted sum of different metrics in the reward function), multi-objective GA methods (e.g., NSGA-II, NPGA) discover a \emph{set} of Pareto-optimal solutions. This advantage is illustrated in Figures~\ref{fig:nsga2-pareto-frontiers} and~\ref{fig:npga-pareto-frontiers}, where multiple configurations of latency, energy, and throw rate emerge along the final Pareto front. Practitioners can then select solutions that best fit their operational requirements (e.g., emphasizing latency reduction or prioritizing energy savings).
+
+DQL produces a single high-performing policy that, in practice, falls within or near the Pareto front discovered by GA. Experimental results indicate the DQL policy is generally comparable to those in the GA Pareto set. However, users requiring fine-grained trade-offs among metrics may prefer GA-based multi-objective solutions.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figs/pareto_frontiers_nsga2.png}
-    \caption{Pareto Frontiers Discovered by NSGA2 (MLP Genome)}
+    \caption{Pareto frontiers discovered by NSGA-II with MLP genome.}
     \label{fig:nsga2-pareto-frontiers}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figs/pareto_frontiers_npga.png}
-    \caption{Pareto Frontiers Discovered by NPGA (MLP Genome)}
+    \caption{Pareto frontiers discovered by NPGA with MLP genome.}
     \label{fig:npga-pareto-frontiers}
 \end{figure}
 
-\paragraph{Why GA Is Not Considered for Transformers}
-Given the high dimensionality of Transformer parameters (approximately 350k), evolutionary algorithms would face immense difficulty converging within reasonable time and computational budgets. Hence, the DQL approach is used for Transformer-based models, exploiting gradient descent to handle large parameter counts more efficiently.
+\paragraph{Inapplicability of GA for Transformer Architectures}
+Given the high dimensionality of Transformer parameters (approximately 350k), evolutionary algorithms would face immense difficulty converging within reasonable time and computational budgets. Therefore, DQL is employed for Transformer-based models, exploiting gradient-based optimization to handle large parameter counts more efficiently.
 
 \paragraph{Discussion}
-The comparative analysis reveals distinct advantages and limitations for each approach. The genetic algorithm demonstrates superior capability in generating a diverse range of Pareto-optimal solutions, thereby providing greater flexibility in objective weighting and multi-criteria optimization scenarios. In contrast, the deep Q-reinforcement learning approach exhibits faster convergence characteristics, rapidly converging to a single high-quality policy when hyperparameters are appropriately configured, while demonstrating reduced sensitivity to initial random seed selection. However, both methodologies present notable limitations that warrant consideration. The GA-based training approach incurs significant computational overhead, potentially limiting its applicability in resource-constrained environments. Conversely, the DQL framework is susceptible to local optima entrapment when learning rates or exploration parameters are suboptimally configured, which can substantially compromise solution quality and training stability.
+The comparative analysis reveals distinct advantages and limitations for each approach. Genetic algorithms demonstrate superior capability in generating diverse Pareto-optimal solutions, providing greater flexibility in objective weighting and multi-criteria optimization scenarios. In contrast, deep Q-learning exhibits faster convergence, rapidly achieving a single high-quality policy when hyperparameters are appropriately configured, while demonstrating reduced sensitivity to initial random seed selection.
+
+However, both methodologies present notable limitations. GA-based training incurs significant computational overhead, potentially limiting applicability in resource-constrained environments. Conversely, DQL is susceptible to local optima entrapment when learning rates or exploration parameters are suboptimally configured, which can substantially compromise solution quality and training stability.
 
 % \section{Conclusion and Perspectives}\label{sec:conclusion}
 
