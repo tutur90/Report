@@ -986,6 +986,10 @@ The additional features, added by the task-level attributes, enable more context
 
 Similar to NOTE, T-NOTE exhibits rapid score improvement during the initial epoch, reflecting quick adaptation to the task offloading problem. However, unlike NOTE, which experiences performance degradation after epoch 4, T-NOTE demonstrates continued exploration capabilities. The score exhibits a secondary descent from epoch 16 through the final training epoch. This behavior indicates that the model continues to refine its policy in pursuit of improved solutions, suggesting that the task-aware attention mechanism provides sufficient representational capacity to avoid premature convergence to local optima. This sustained exploration capability, combined with the model's ability to leverage task-specific information, enables T-NOTE to discover superior offloading strategies that achieve the best overall performance across all evaluation metrics during the test, as demonstrated in Table~\ref{tab:results_comparison}.
 
+\subsection{Discussion}
+
+The results demonstrate the effectiveness DQL-based approaches for task offloading in hierarchical edge-fog-cloud environments. The MLP-based DQL model, while computationally efficient, exhibits limitations in capturing complex task-node interactions, leading to less stable convergence and suboptimal performance compared to transformer-based methods. In contrast, the NOTE and T-NOTE architectures leverage self-attention mechanisms to effectively model inter-node relationships and task-specific contexts, resulting in superior performance across all evaluation metrics. However, the increased performance comes with an additional computational complexity, especially for transformer-based models, which may limit their applicability in resource-constrained environments.
+The DQL suffers also of the fact that it require experimental reward weight tuning to achieve the desired trade-off between TTR, latency, and energy consumption. Reward weights tuning does not always follow a linear relationship with the performance metrics and intuitive behavior, making it challenging to predict the exact impact of weight adjustments on the overall performance. These trade-offs can lead to unexpected outcomes, where small changes in weights result in significant performance variations, complicating the optimization process.
 
 \subsection{Offloading Analysis}\label{subsec:offloading-analysis}
 
@@ -1055,7 +1059,7 @@ Figure~\ref{fig:greedy-power-consumption} presents power consumption across diff
 \end{figure}
 
 
-\subsubsection{MLP-Based DQL Performance Analysis}\label{subsubsec:mlp-DQL-analysis}
+\subsubsection{MLP-Based DQL}\label{subsubsec:mlp-DQL-analysis}
 
 As illustrated in Figure~\ref{fig:mlp-task-offloading-stats}, the MLP-based policy exhibits a cloud-centric offloading strategy. This approach prioritizes cloud node utilization to minimize both TTR and processing latency, directly reflecting the optimization objective defined by the high weighting factors $\lambda_0$ (failure penalty) and $\lambda_1$ (latency penalty) in the reward function. The policy demonstrates clear preference for leveraging superior computational resources in cloud nodes, which possess higher processing capabilities and more stable connectivity than edge and fog alternatives.
 
@@ -1084,11 +1088,43 @@ However, this strategy results in significant fog device underutilization, with 
 
 The performance characteristics in Figure~\ref{fig:mlp-avg-latency} confirm the cloud-centric strategy's effectiveness in achieving low latency objectives while revealing limitations in energy distribution. Concentrating task processing at cloud nodes minimizes communication and processing latency but creates substantial energy burden on cloud infrastructure. This trade-off reflects the single-objective optimization focus inherent in the DQL approach, where the primary goal is maximizing a unified reward function rather than explicitly balancing multiple competing objectives.
 
+\subsection{NOTE}
 
-\subsubsection{Transformer-Based DQL (T-NOTE)}\label{subsubsec:T-NOTE-analysis}
+The NOTE architecture represents a significant advancement over traditional MLP-based approaches by incorporating explicit attention mechanisms for task attribute processing. 
 
-The T-NOTE architecture represents a significant advancement over traditional MLP-based approaches by incorporating explicit attention mechanisms for task attribute processing. While both NOTE and T-NOTE variants demonstrate improvements over MLP-based solutions, T-NOTE consistently outperforms NOTE due to its enhanced capability to model task-specific characteristics and their relationships to optimal node selection.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/NOTE/task_offloading_statistics.png}
+    \caption{Task offloading distribution for NOTE}
+    \label{fig:NOTE-offloading-stats}
+\end{figure}
 
+Even though NOTE have a similar task offloading distribution as Greedy, as shown in Figure~\ref{fig:NOTE-offloading-stats}, it demonstrates more sophisticated resource orchestration strategies since it the performance is significantly better than Greedy, as shown in Table~\ref{tab:results_comparison}. This highlights the effectiveness of the Transformer architecture in capturing complex relationships amoung the nodes and links of environement through its attention mechanism. The Figure~\ref{fig:T-NOTE-avg-latency} confirm this observation, showing an overall lower wait time across all nodes compared to Greedy, as shown in Figure~\ref{fig:greedy-avg-latency}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/NOTE/avg_latency_per_link.png}
+    \caption{Average latency per network link for NOTE}
+    \label{fig:T-NOTE-avg-latency}
+\end{figure}
+
+The power consumption across nodes is also similar to Greedy, as shown in Figure~\ref{fig:T-NOTE-energy-consumption}, with intensive cloud consumptions while other nodes are consuming very little power. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/NOTE/power_consumption_per_node.png}
+    \caption{Power consumption distribution for NOTE}
+    \label{fig:T-NOTE-energy-consumption}
+\end{figure}
+
+
+
+
+
+\subsubsection{T-NOTE}\label{subsubsec:T-NOTE-analysis}
+
+
+
+Including task-level features in the T-NOTE architecture conduct to surprising resuts in terms of offloading strategies. The edge node is widely is utilized, as shown in Figure~\ref{fig:T-NOTE-offloading-stats}, which is not the case for other approaches. It also 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figs/T-NOTE/task_offloading_statistics.png}
@@ -1124,6 +1160,9 @@ The balanced allocation strategy becomes more apparent when examining the latenc
 The energy consumption and CPU utilization patterns shown in Figures~\ref{fig:T-NOTE-energy-consumption} and \ref{fig:T-NOTE-cpu-frequency} illustrate that cloud nodes continue to dominate in both power usage and computational utilization. This dominance aligns with the high resource availability at cloud level and the reward function's emphasis on minimizing task failures and processing latency. However, the partial utilization of fog nodes represents a strategic improvement over the MLP approach, as it helps mitigate congestion at the cloud level while maintaining overall system performance.
 
 The T-NOTE's adaptive decision-making capability enables it to recognize scenarios where distributed processing across multiple node types provides superior outcomes compared to pure cloud-centric strategies. This flexibility becomes particularly valuable under varying network conditions and diverse task requirements, demonstrating the architecture's potential for real-world deployment scenarios where computational demands and network characteristics exhibit significant temporal and spatial variation.
+
+
+\subsection{T-NOTE energy }
 
 
 
