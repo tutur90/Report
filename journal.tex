@@ -76,7 +76,7 @@
 %% use optional labels to link authors explicitly to addresses:
 \author[arthur,sonia,lylia]{Arthur Garon, Sonia Yassa, Lylia Alouache}
 \affiliation[arthur,sonia,lylia]{organization={ETIS UMR 8051,
-CY Cergy Paris Université, ENSEA, CNRS},%Department and Organization
+CY Cergy Paris Université, ENSEA,},%Department and Organization
             addressline={},
             city={Cergy},
             postcode={95000},
@@ -572,48 +572,7 @@ The DQL workflow, as detailed in Algorithm~\ref{alg:DQL_iot_offloading}, begins 
 \]
 Here, \(\lambda_0\) penalizes failure, \(L_{\text{task}}, E_{\text{task}}\) are normalized by epoch maxima, and \(\lambda_1, \lambda_2\) tune the importance of latency and energy, respectively. Finally, after a certain number of tasks, transitions are sampled from the replay buffer for training updates, where the Q-learning target is computed as \(Q_{\text{target}} = r \;+\; (1 - \mathbf{1}_{\text{done}})\,\gamma\, \max_{a'} Q(s',a')\), and the network is trained using methods such as MSE loss to align predicted Q-values with \(Q_{\text{target}}\), with Q-value estimates converging over multiple epochs.
 
-\paragraph{Key Observations}
-Several key observations emerge from the DQL approach. Failure penalties implemented through a negative \(\lambda_{0}\) can strongly discourage decisions that often cause task failures, providing a direct mechanism to avoid poor offloading choices. Metric normalization achieved by dividing latency and energy by epoch-wide maxima ensures bounded values for stable learning, preventing any single metric from dominating the reward signal. Metric emphasis can be adjusted by tuning \(\lambda_{1,2}\) to shift the balance between minimizing latency and saving energy, allowing the system to be configured for different optimization priorities. Finally, architectural flexibility is maintained since although an MLP is standard, more sophisticated models such as Transformers can replace or extend the MLP while retaining the same DQL pipeline.
-
-\subsubsection{MLP-Based DQL}\label{subsubsec:mlp_DQL}
-
-The MLP-based DQL reflects the MLP structure utilised in genetic algorithms. However, rather than undergoing weight evolution, it employs Q-learning to train the weights. The architecture comprises a feed-forward MLP that processes the current system state. This state includes metrics such as CPU, buffer, and bandwidth. The MLP outputs Q-values per node in order to guide the offloading decision. The task attributes (size, deadline, cycles/bit, and transmission bit rate) are also incorporated into the input features for a variant of MLP named T-MLP. The policy employs an \(\varepsilon\)-greedy strategy that balances exploration and exploitation, ensuring the agent can discover new promising strategies while leveraging learned knowledge. The reward definition encodes latency, energy, and failures into a comprehensive reward function that captures the multi-objective nature of the offloading problem. The process of batch updates is facilitated by the utilisation of a replay buffer, which serves to stabilise the training process and diminish the correlation among transitions. This, in turn, engenders more robust learning dynamics.
-
-
-\subsubsection{Transformer-based DQL}\label{subsubsec:transformers}
-
-Transformer architectures~\citep{vaswani2023attentionneed} leverage multi-head self-attention to model complex relationships across various domains, despite often having high parameter counts. Task offloading is no exception, as shown by~\citet{gholipour_tpto_2023}, where a PPO-based policy was employed for Transformers. In the present work, two Transformer-based DQL variants are introduced to enable task offloading across multiple nodes:
-
-\paragraph{NOTE}\label{par:note}
-
-NOTE encodes each node’s available resources (CPU, buffer, and bidirectional link bandwidth) into an embedding vector. A positional encoding is then added to identify each node’s location in the topology. A Transformer encoder stack processes these node embeddings in parallel, enabling the model to learn both pairwise and global context. Finally, a feed-forward projection estimates the Q-value for each node, guiding the offloading decision. Because NOTE primarily targets node-level features, tasks are treated in an aggregated manner.
-
-\begin{itemize}
-    \item \textbf{Node Embeddings:} CPU frequency, buffer size, and upstream/downstream bandwidth are first passed through a fully connected layer to produce an embedding of dimension \(\displaystyle d_{\text{model}}\), where \(d_{\text{model}}\) is the hidden dimension of the model. Concatenating all node embeddings yields a tensor of size \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\), where \(n_{\text{nodes}}\) is the total number of nodes in the environment.
-    \item \textbf{Positional Encoding:} Trainable parameters that characterize each node’s position in the network topology. These embeddings also form a \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\) matrix.
-    \item \textbf{Transformer Encoder:} Multi-head self-attention highlights potential bottlenecks and optimal resource matches among the nodes. Residual connections and layer normalization are used, followed by a feed-forward sublayer with a GELU activation~\citep{hendrycks2023gaussianerrorlinearunits}. This encoder block is repeated \(N\) times.
-    \item \textbf{Output Layer:} A fully connected layer projects the encoded representations to Q-values, producing one scalar per node. The node with the highest Q-value is then chosen for offloading.
-\end{itemize}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figs/nodeformer_architecture.png}
-    \caption{NOTE Architecture}\label{fig:note_architecture}
-\end{figure}
-
-\paragraph{T-NOTE}\label{par:T-NOTE}
-
-T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and CPU-cycle requirements). These task features are passed through a fully connected layer to produce a vector of size \(d_{\text{model}}\). The resulting vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and node positional encodings before entering the Transformer encoder. Task-specific positional encoding can be combined or managed separately, allowing the model to capture task characteristics through shared attention. While including task information enables the Transformer encoder to more accurately learn interactions between node resources and task demands, it also increases the complexity of each DQL state. This added complexity sometimes leads to greater model instability, as rapid changes in the task dimension can cause oscillations in policy behavior. Consequently, NOTE (which omits explicit task embeddings) may remain advantageous in scenarios where a simpler, more stable representation is desired.
-
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figs/taskformer_architecture.png}
-    \caption{T-NOTE Architecture}\label{fig:t-note_architecture}
-\end{figure}
-
-
-\begin{algorithm}[h]
+\begin{algorithm}[htbp]
 \caption{Deep Q-Learning for IoT Task Offloading}\label{alg:DQL_iot_offloading}
 \begin{algorithmic}[1]
 \REQUIRE{Environment $\mathcal{E}$, task dataset $\mathcal{D}$, hyperparameters $\{\alpha, \gamma, \epsilon_0, \epsilon_{\text{decay}}, \lambda_0, \lambda_1, \lambda_2\}$}
@@ -665,6 +624,51 @@ T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and 
 \RETURN{Optimal policy $\pi^*(s) = \arg\max_a Q_\theta(s,a)$}
 \end{algorithmic}
 \end{algorithm}
+
+\paragraph{Key Observations}
+Several key observations emerge from the DQL approach. Failure penalties implemented through a negative \(\lambda_{0}\) can strongly discourage decisions that often cause task failures, providing a direct mechanism to avoid poor offloading choices. Metric normalization achieved by dividing latency and energy by epoch-wide maxima ensures bounded values for stable learning, preventing any single metric from dominating the reward signal. Metric emphasis can be adjusted by tuning \(\lambda_{1,2}\) to shift the balance between minimizing latency and saving energy, allowing the system to be configured for different optimization priorities. Finally, architectural flexibility is maintained since although an MLP is standard, more sophisticated models such as Transformers can replace or extend the MLP while retaining the same DQL pipeline.
+
+\subsubsection{MLP-Based DQL}\label{subsubsec:mlp_DQL}
+
+The MLP-based DQL reflects the MLP structure utilised in genetic algorithms. However, rather than undergoing weight evolution, it employs Q-learning to train the weights. The architecture comprises a feed-forward MLP that processes the current system state. This state includes metrics such as CPU, buffer, and bandwidth. The MLP outputs Q-values per node in order to guide the offloading decision. The task attributes (size, deadline, cycles/bit, and transmission bit rate) are also incorporated into the input features for a variant of MLP named T-MLP. The policy employs an \(\varepsilon\)-greedy strategy that balances exploration and exploitation, ensuring the agent can discover new promising strategies while leveraging learned knowledge. The reward definition encodes latency, energy, and failures into a comprehensive reward function that captures the multi-objective nature of the offloading problem. The process of batch updates is facilitated by the utilisation of a replay buffer, which serves to stabilise the training process and diminish the correlation among transitions. This, in turn, engenders more robust learning dynamics. 
+
+
+
+
+\subsubsection{Transformer-based DQL}\label{subsubsec:transformers}
+
+Transformer architectures~\citep{vaswani2023attentionneed} leverage multi-head self-attention to model complex relationships across various domains, despite often having high parameter counts. Task offloading is no exception, as shown by~\citet{gholipour_tpto_2023}, where a PPO-based policy was employed for Transformers. In the present work, two Transformer-based DQL variants are introduced to enable task offloading across multiple nodes:
+
+\paragraph{NOTE}\label{par:note}
+
+NOTE encodes each node’s available resources (CPU, buffer, and upstream/downstream bandwidth) into an embedding vector. A positional encoding is then added to identify each node’s location in the topology. A Transformer encoder stack processes these node embeddings in parallel, enabling the model to learn both pairwise and global context. Finally, a feed-forward projection estimates the Q-value for each node, guiding the offloading decision. Because NOTE primarily targets node-level features, tasks are treated in an aggregated manner.
+
+\begin{itemize}
+    \item \textbf{Node Embeddings:} Node’s available resources are first passed through a fully connected layer to produce an embedding of dimension \(\displaystyle d_{\text{model}}\), where \(d_{\text{model}}\) is the hidden dimension of the model. Concatenating all node embeddings yields a tensor of size \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\), where \(n_{\text{nodes}}\) is the total number of nodes in the environment.
+    \item \textbf{Positional Encoding:} Trainable parameters that characterize each node’s position in the network topology. These embeddings also form a \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\) matrix.
+    \item \textbf{Transformer Encoder:} Multi-head self-attention highlights potential bottlenecks and optimal resource matches among the nodes. Residual connections and layer normalization are used, followed by a feed-forward sublayer with a GELU activation~\citep{hendrycks2023gaussianerrorlinearunits}. This encoder block is repeated \(N\) times.
+    \item \textbf{Output Layer:} A fully connected layer projects the encoded representations to Q-values, producing one scalar per node. The node with the highest Q-value is then chosen for offloading.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figs/NOTE_architecture.png}
+    \caption{NOTE Architecture}\label{fig:note_architecture}
+\end{figure}
+
+\paragraph{T-NOTE}\label{par:T-NOTE}
+
+T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and CPU-cycle requirements). These task features are passed through a fully connected layer to produce a vector of size \(d_{\text{model}}\). The resulting vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and node positional encodings before entering the Transformer encoder. Task-specific positional encoding can be combined or managed separately, allowing the model to capture task characteristics through shared attention. While including task information enables the Transformer encoder to more accurately learn interactions between node resources and task demands, it also increases the complexity of each DQL state. This added complexity sometimes leads to greater model instability, as rapid changes in the task dimension can cause oscillations in policy behavior. Consequently, NOTE (which omits explicit task embeddings) may remain advantageous in scenarios where a simpler, more stable representation is desired.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/T-NOTE_architecture.png}
+    \caption{T-NOTE Architecture}\label{fig:t-note_architecture}
+\end{figure}
+
+
+
 
 \subsection{Computational Complexity}
 
@@ -1312,10 +1316,10 @@ Future work should explore policy gradient methods such as Proximal Policy Optim
 \paragraph{Multi-Objective Optimization}
 A more extensive investigation of multi-objective genetic algorithms could provide valuable insights into the trade-offs between different QoS metrics. Developing lightweight variants of GA suitable for high-dimensional parameter spaces would enable the discovery of comprehensive Pareto frontiers for complex neural architectures.
 
+\section{}
 
-
- \bibliographystyle{elsarticle-harv} 
- \bibliography{references}
+\bibliographystyle{elsarticle-harv} 
+\bibliography{references}
 
 \end{document}
 

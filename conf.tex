@@ -38,7 +38,7 @@
 \author{Arthur Garon\inst{1} \and Sonia Yassa\inst{2}
 Lylia Alouache\inst{3}}
 %
-\authorrunning{Arthur Garon et al.} % abbreviated author list (for running head)
+% \authorrunning{Arthur Garon et al.} % abbreviated author list (for running head)
 %
 %%%% list of authors for the TOC (use if author list has to be modified)
 \tocauthor{Arthur Garon, Sonia Yassa, Lylia Alouache}
@@ -318,28 +318,19 @@ This model provide a structured, interpretable framework for quantifying energy 
 
 \section{Proposed Offloading Strategies}\label{sec:offloading_strategy}
 
-Transformer architectures~\citep{vaswani2023attentionneed} leverage multi-head self-attention to model complex relationships across various domains, despite often having high parameter counts. Task offloading is no exception, as shown by~\citet{gholipour_tpto_2023}, where a PPO-based policy was employed for Transformers. In the present work, two Transformer-based DQL variants are introduced to enable task offloading across multiple nodes:
+Transformer architectures~\cite{vaswani2023attentionneed} leverage multi-head self-attention to model complex relationships across various domains, despite often having high parameter counts. Task offloading is no exception, as shown by~\cite{gholipour_tpto_2023}, where a PPO-based policy was employed for Transformers. In the present work, a Transformer-based under DQL paradigm~\ref{alg:DQL_iot_offloading} is introduced to enable task offloading across multiple nodes.
 
-\paragraph{NOTE}\label{par:note}
 
-NOTE encodes each node’s available resources (CPU, buffer, and bidirectional link bandwidth) into an embedding vector. A positional encoding is then added to identify each node’s location in the topology. A Transformer encoder stack processes these node embeddings in parallel, enabling the model to learn both pairwise and global context. Finally, a feed-forward projection estimates the Q-value for each node, guiding the offloading decision. Because NOTE primarily targets node-level features, tasks are treated in an aggregated manner.
+T-NOTE encodes each node’s available resources (CPU, buffer, and bidirectional link bandwidth) into an embedding vector. A positional encoding is then added to identify each node’s location in the topology. Additionally task attributes (e.g., size, deadline, and CPU-cycle requirements). These task features are passed through a fully connected layer to produce a vector of size \(d_{\text{model}}\). The resulting vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and node positional encodings before entering the Transformer encoder.
+A Transformer encoder stack processes these node embeddings in parallel, enabling the model to learn both pairwise and global context. Finally, a feed-forward projection estimates the Q-value for each node, guiding the offloading decision. Because NOTE primarily targets node-level features, tasks are treated in an aggregated manner.
 
 \begin{itemize}
     \item \textbf{Node Embeddings:} CPU frequency, buffer size, and upstream/downstream bandwidth are first passed through a fully connected layer to produce an embedding of dimension \(\displaystyle d_{\text{model}}\), where \(d_{\text{model}}\) is the hidden dimension of the model. Concatenating all node embeddings yields a tensor of size \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\), where \(n_{\text{nodes}}\) is the total number of nodes in the environment.
     \item \textbf{Positional Encoding:} Trainable parameters that characterize each node’s position in the network topology. These embeddings also form a \(\displaystyle n_{\text{nodes}} \times d_{\text{model}}\) matrix.
-    \item \textbf{Transformer Encoder:} Multi-head self-attention highlights potential bottlenecks and optimal resource matches among the nodes. Residual connections and layer normalization are used, followed by a feed-forward sublayer with a GELU activation~\citep{hendrycks2023gaussianerrorlinearunits}. This encoder block is repeated \(N\) times.
+    \item \textbf{Task Features:} Task attributes (size, deadline, CPU cycles) are passed through a fully connected layer to produce a vector of size \(\displaystyle d_{\text{model}}\). This vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and positional encodings.
+    \item \textbf{Transformer Encoder:} Multi-head self-attention highlights potential bottlenecks and optimal resource matches among the nodes. Residual connections and layer normalization are used, followed by a feed-forward sublayer with a GELU activation~\cite{hendrycks2023gaussianerrorlinearunits}. This encoder block is repeated \(N\) times.
     \item \textbf{Output Layer:} A fully connected layer projects the encoded representations to Q-values, producing one scalar per node. The node with the highest Q-value is then chosen for offloading.
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figs/nodeformer_architecture.png}
-    \caption{NOTE Architecture}\label{fig:note_architecture}
-\end{figure}
-
-\paragraph{T-NOTE}\label{par:T-NOTE}
-
-T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and CPU-cycle requirements). These task features are passed through a fully connected layer to produce a vector of size \(d_{\text{model}}\). The resulting vector is then replicated across the \(n_{\text{nodes}}\) dimension and added to the node embeddings and node positional encodings before entering the Transformer encoder. Task-specific positional encoding can be combined or managed separately, allowing the model to capture task characteristics through shared attention. While including task information enables the Transformer encoder to more accurately learn interactions between node resources and task demands, it also increases the complexity of each DQL state. This added complexity sometimes leads to greater model instability, as rapid changes in the task dimension can cause oscillations in policy behavior. Consequently, NOTE (which omits explicit task embeddings) may remain advantageous in scenarios where a simpler, more stable representation is desired.
 
 
 \begin{figure}[H]
@@ -446,7 +437,7 @@ This dataset is adapted for the RayCloudSim framework, retaining only the most p
 
 \subsubsection{System Resources and Topology}\label{subsec:system_resources_topology}
 
-To align with the dataset location, we designate the GG in Islamabad, Pakistan as the Edge node. The Fog nodes are configured as Micro-Data Centers (MDCs) distributed across various cities in Pakistan to provide regional computational resources. For the Cloud layer, we select data centers based on Google's global data center locations \citep{googleDataCenters}, specifically choosing the geographically nearest data centers to Pakistan to minimize latency overhead and ensure realistic network conditions.
+To align with the dataset location, we designate the GG in Islamabad, Pakistan as the Edge node. The Fog nodes are configured as Micro-Data Centers (MDCs) distributed across various cities in Pakistan to provide regional computational resources. For the Cloud layer, we select data centers based on Google's global data center locations \cite{googleDataCenters}, specifically choosing the geographically nearest data centers to Pakistan to minimize latency overhead and ensure realistic network conditions.
 
 
 In Figure~\ref{fig:used_architecture}, a network is shown to consist of eight nodes (\textit{Edge}, \textit{Fog}, and \textit{Cloud}) connected by multiple links with diverse bandwidth capacities. The \textit{edge node} (\texttt{e0}) is equipped with a low CPU frequency and a limited task buffer, whereas the \textit{fog nodes} (\texttt{f0}, \texttt{f1}, \texttt{f2}, \texttt{f3}, \texttt{f4}) has intermediate CPU frequencies and queue sizes. The \textit{cloud nodes} (\texttt{c0}, \texttt{c1}) exhibits the highest CPU frequencies and large buffer capacities, although they may incur higher idle power consumption and larger network latency due to their remote location.
@@ -509,7 +500,7 @@ The complete hyperparameter specifications are detailed in Table~\ref{tab:model_
 \begin{table}[H]
 \centering
 
-\resizebox{\columnwidth}{!}{%
+% \resizebox{\columnwidth}{!}{%
 \begin{tabular}{|l|c|c|}
 \hline
 \textbf{Parameter} & \textbf{Transformer Model} & \textbf{MLP Model} \\ \hline
@@ -521,7 +512,7 @@ Dropout & 0.2 & 0 \\ \hline
 Activation function & GELU & ReLU \\ \hline
 Input features & \{cpu, bw, buffer\} + \{task\_type\}  \\ \hline
 \end{tabular}%
-}
+% }
 \caption{Model Specifications}\label{tab:model_specifications}
 \end{table}
 
@@ -544,23 +535,23 @@ Greedy methods assign tasks based on immediate resource availability or specific
 
 The NOTE architecture encodes exclusively node-level features (CPU availability, buffer capacity, and bandwidth), aggregated across tasks. As illustrated in Figure~\ref{fig:NOTE-score-plot}, the learning process rapidly stabilizes and converges at epoch 4, where the optimal model is selected. This expedited convergence demonstrates the effectiveness of self-attention mechanisms in capturing and refining multi-node relationships.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{figs/NOTE/score_plot.png}
-    \caption{Training convergence and performance scores for NOTE-based DQL approach.}
-    \label{fig:NOTE-score-plot}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=1\linewidth]{figs/NOTE/score_plot.png}
+%     \caption{Training convergence and performance scores for NOTE-based DQL approach.}
+%     \label{fig:NOTE-score-plot}
+% \end{figure}
 
 However, performance degradation occurs after epoch 4, potentially indicating convergence to a local optimum. This behavior suggests that while NOTE efficiently learns effective offloading policies, it may benefit from additional exploration strategies or more expressive feature representations. The incorporation of task-level features in T-NOTE effectively addresses this limitation.
 
 The additional features, added by the task-level attributes, enable more contextually informed offloading decisions, resulting in improved convergence characteristics and superior performance with respect to both latency and task success rate. Figure~\ref{fig:T-NOTE-score-plot} demonstrates the convergence behavior of T-NOTE throughout the training process.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{figs/T-NOTE/score_plot.png}
-    \caption{Training convergence and performance scores for T-NOTE-based DQL approach.}
-    \label{fig:T-NOTE-score-plot}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=1\linewidth]{figs/T-NOTE/score_plot.png}
+%     \caption{Training convergence and performance scores for T-NOTE-based DQL approach.}
+%     \label{fig:T-NOTE-score-plot}
+% \end{figure}
 
 Similar to NOTE, T-NOTE exhibits rapid score improvement during the initial epoch, reflecting quick adaptation to the task offloading problem. However, unlike NOTE, which experiences performance degradation after epoch 4, T-NOTE demonstrates continued exploration capabilities. The score exhibits a secondary descent from epoch 16 through the final training epoch. This behavior indicates that the model continues to refine its policy in pursuit of improved solutions, suggesting that the task-aware attention mechanism provides sufficient representational capacity to avoid premature convergence to local optima. This sustained exploration capability, combined with the model's ability to leverage task-specific information, enables T-NOTE to discover superior offloading strategies that achieve the best overall performance across all evaluation metrics during the test, as demonstrated in Table~\ref{tab:results_comparison}.
 \subsection{Evaluation}
@@ -605,13 +596,18 @@ When configured with energy-optimized reward weights, T-NOTE achieves a TTR appr
 
 This section analyzes the offloading strategies employed by different approaches, examining their performance characteristics, resource utilization patterns, and trade-offs. The analysis provides insights into how each method addresses task allocation challenges in hierarchical edge-fog-cloud computing environments.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/task_offloading_statistics.png}
-    \caption{Task offloading distribution for T-NOTE}
-    \label{fig:T-NOTE-offloading-stats}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figs/T-NOTE4E/task_offloading_statistics.png}
+%     \caption{Task offloading distribution for T-NOTE}
+%     \label{fig:T-NOTE-offloading-stats}
+% \end{figure}
 
+\begin{figure}
+\vspace{2.5cm}
+\caption{This is the caption of the figure displaying a white eagle and
+a white horse on a snow field}
+\end{figure}
 
 \section{Conclusion and Perspectives}\label{sec:conclusion}
 
