@@ -40,7 +40,7 @@
 % \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
-\journal{Nuclear Physics B}
+\journal{Sustainable Computing: Informatics and Systems}
 
 \begin{document}
 
@@ -75,20 +75,28 @@
 
 %% use optional labels to link authors explicitly to addresses:
 \author[arthur,sonia,lylia]{Arthur Garon, Sonia Yassa, Lylia Alouache}
-\affiliation[arthur,sonia,lylia]{organization={ETIS UMR 8051,
-CY Cergy Paris Université, ENSEA,},%Department and Organization
-            addressline={},
+
+\affiliation[sonia,lylia]{organization={CY Cergy Paris Université},
+            addressline={33 boulevard du Port},
             city={Cergy},
             postcode={95000},
             state={},
             country={France}}
 
-% \affiliation[label2]{organization={},
-%             addressline={},
-%             city={},
-%             postcode={},
-%             state={},
-%             country={}}
+\affiliation[arthur,sonia,lylia]{organization={ETIS UMR8051 CNRS CY Cergy Paris Université},%Department and Organization
+            addressline={2 avenue Adolphe Chauvin},
+            city={Cergy},
+            postcode={95000},
+            state={},
+            country={France}}
+
+
+\affiliation[arthur]{organization={ENSEA},
+            addressline={6 avenue du Ponceau},
+            city={Cergy},
+            postcode={95000},
+            state={},
+            country={France}}
 
 % \author{} %% Author name
 
@@ -114,7 +122,9 @@ The proliferation of Internet of Things (IoT) devices has created unprecedented 
 
 %%Graphical abstract
 \begin{graphicalabstract}
-%\includegraphics{grabs}
+\begin{center}
+    \includegraphics[width=1\linewidth]{figs/graphical_abstract.pdf}
+\end{center}
 \end{graphicalabstract}
 
 %%Research highlights
@@ -238,7 +248,7 @@ Algorithms are referenced in the Table~\ref{tab:task_offloading_methods} with th
 \centering
 
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\begin{tabular}{llllllll}
 \hline
 \textbf{Paper} & \textbf{Method} & \textbf{Algorithm} & \textbf{Dataset} & \textbf{QoS} & \textbf{Type of Job} & \textbf{Environment} & \textbf{Tool} \\ \hline
 ~\cite{yan_optimal_2020} & Deterministic & Optimal Task Assignment & Real & E, ET & IoT tasks & MEC & NA \\ \hline
@@ -264,7 +274,7 @@ This work & AI & DQL+MLP/Transformers & Real & C, L, TTR & IoT tasks & Cloud \& 
 \begin{table*}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{ |c|l| }
+\begin{tabular}{ cl }
 \hline
 \textbf{Metric} & \textbf{Description} \\ \hline
 C\: Cost & Refers to the expenses incurred in task offloading from computation to storage cost, passing by data the transfer costs. \\ \hline
@@ -293,7 +303,7 @@ The study employs a real-world dataset of IoT-generated tasks to evaluate the pe
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.75\linewidth]{figs/cloud_architecture.png}
+    \includegraphics[width=0.75\linewidth]{figs/system_architecture.pdf}
     \caption{System Architecture}\label{fig:cloud-architecture}
 \end{figure}
 
@@ -652,7 +662,7 @@ NOTE encodes each node’s available resources (CPU, buffer, and upstream/downst
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\linewidth]{figs/NOTE_architecture.png}
+    \includegraphics[width=0.6\linewidth]{figs/NOTE_architecture.pdf}
     \caption{NOTE Architecture}\label{fig:note_architecture}
 \end{figure}
 
@@ -663,7 +673,7 @@ T-NOTE extends NOTE by incorporating task attributes (e.g., size, deadline, and 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\linewidth]{figs/T-NOTE_architecture.png}
+    \includegraphics[width=0.8\linewidth]{figs/T-NOTE_architecture.pdf}
     \caption{T-NOTE Architecture}\label{fig:t-note_architecture}
 \end{figure}
 
@@ -744,7 +754,7 @@ The dataset covers diverse devices (sensors, dumb objects, mobiles, actuators, a
 \centering
 
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|c|c|c|c|c|}
+\begin{tabular}{lcccccc}
 \hline
 \textbf{Statistic} & \textbf{Generation Time (s)} & \textbf{Task Size (MB)} & \textbf{Cycles/Bit} & \textbf{Trans. Bit Rate (MB/s)} & \textbf{DDL (s)} \\ \hline
 Count & 30,000 & 30,000 & 30,000 & 30,000 & 30,000 \\ \hline
@@ -768,12 +778,12 @@ This dataset is adapted for the RayCloudSim framework, retaining only the most p
 To align with the dataset location, we designate the GG in Islamabad, Pakistan as the Edge node. The Fog nodes are configured as Micro-Data Centers (MDCs) distributed across various cities in Pakistan to provide regional computational resources. For the Cloud layer, we select data centers based on Google's global data center locations \citep{googleDataCenters}, specifically choosing the geographically nearest data centers to Pakistan to minimize latency overhead and ensure realistic network conditions.
 
 
-In Figure~\ref{fig:used_architecture}, a network is shown to consist of eight nodes (\textit{Edge}, \textit{Fog}, and \textit{Cloud}) connected by multiple links with diverse bandwidth capacities. The \textit{edge node} (\texttt{e0}) is equipped with a low CPU frequency and a limited task buffer, whereas the \textit{fog nodes} (\texttt{f0}, \texttt{f1}, \texttt{f2}, \texttt{f3}, \texttt{f4}) has intermediate CPU frequencies and queue sizes. The \textit{cloud nodes} (\texttt{c0}, \texttt{c1}) exhibits the highest CPU frequencies and large buffer capacities, although they may incur higher idle power consumption and larger network latency due to their remote location.
+In Figure~\ref{fig:nodes_architecture}, a network is shown to consist of eight nodes (\textit{Edge}, \textit{Fog}, and \textit{Cloud}) connected by multiple links with diverse bandwidth capacities. The \textit{edge node} (\texttt{e0}) is equipped with a low CPU frequency and a limited task buffer, whereas the \textit{fog nodes} (\texttt{f0}, \texttt{f1}, \texttt{f2}, \texttt{f3}, \texttt{f4}) has intermediate CPU frequencies and queue sizes. The \textit{cloud nodes} (\texttt{c0}, \texttt{c1}) exhibits the highest CPU frequencies and large buffer capacities, although they may incur higher idle power consumption and larger network latency due to their remote location.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{figs/used_architecture.png}
-    \caption{Used Architecture featuring Edge (Global Gateway), Fog (MDCs), and Cloud.}\label{fig:used_architecture}
+    \includegraphics[width=0.75\linewidth]{figs/nodes_repartition.pdf}
+    \caption{Nodes architecture featuring Edge (Global Gateway), Fog (MDCs), and Cloud.}\label{fig:nodes_architecture}
 \end{figure}
 
 
@@ -784,7 +794,7 @@ In Table~\ref{tab:node-specifications}, node specifications are listed, includin
 \centering
 
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|c|c|c|c|c|c|c|c|l|}
+\begin{tabular}{lccccccccl}
 \hline
 \textbf{Node} & \textbf{Type} & \textbf{ID} & \textbf{MIPS} & \textbf{Buffer} & \textbf{Up BW} & \textbf{Down BW} & \textbf{Idle P} & \textbf{Exec P} & \textbf{Location} \\
 \hline
@@ -829,7 +839,7 @@ The complete hyperparameter specifications are detailed in Table~\ref{tab:model_
 \centering
 
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|c|c|}
+\begin{tabular}{lcc}
 \hline
 \textbf{Parameter} & \textbf{Transformer Model} & \textbf{MLP Model} \\ \hline
 Hidden dimension ($d_{\text{model}}$) & 64 & 256 \\ \hline
@@ -1316,7 +1326,9 @@ Future work should explore policy gradient methods such as Proximal Policy Optim
 \paragraph{Multi-Objective Optimization}
 A more extensive investigation of multi-objective genetic algorithms could provide valuable insights into the trade-offs between different QoS metrics. Developing lightweight variants of GA suitable for high-dimensional parameter spaces would enable the discovery of comprehensive Pareto frontiers for complex neural architectures.
 
-\section{}
+\section{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+ During the preparation of this work the authors used ChatGPT and Claude in order to assist with writing and editing tasks. After using this tool/service, the main author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
 
 \bibliographystyle{elsarticle-harv} 
 \bibliography{references}
